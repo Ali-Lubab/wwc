@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,7 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(
-        name = "rates",
+        name = "rate",
         uniqueConstraints = @UniqueConstraint(
                 columnNames = {"sourceCurrency", "targetCurrency"}
         )
@@ -27,6 +28,7 @@ import java.math.BigDecimal;
 @Setter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Rate extends Auditable {
 
     @Id
