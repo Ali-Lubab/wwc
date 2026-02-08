@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign up</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<h2>Create account</h2>
+
+<form onsubmit="signup(event)">
+    <input placeholder="First name" id="firstName" required><br>
+    <input placeholder="Last name" id="lastName" required><br>
+    <input type="date" id="dob" required><br>
+    <input placeholder="Email" id="email" required><br>
+    <input type="password" placeholder="Password" id="password" required><br><br>
+
+    <button>Create</button>
+</form>
+
+<script type="module" src="js/api.js"></script>
+<script>
+    async function signup(e) {
+        e.preventDefault();
+
+        const customer = {
+            firstName: firstName.value,
+            lastName: lastName.value,
+            dob: new Date(dob.value).toISOString(),
+            emailAddress: email.value,
+            password: password.value
+        };
+
+        await apiRequest("/customers", "POST", customer);
+        alert("Account created");
+        window.location.href = "index.html";
+    }
+</script>
+</body>
+</html>

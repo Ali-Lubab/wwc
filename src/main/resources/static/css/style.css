@@ -1,0 +1,76 @@
+:root {
+    --green: #3cb371;
+    --green-light: #e6f7ef;
+    --text-dark: #333;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: var(--green-light);
+    margin: 0;
+    padding: 0;
+    color: var(--text-dark);
+}
+
+.centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.card {
+    background: white;
+    padding: 30px;
+    border-radius: 14px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    width: 320px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button.primary {
+    background: var(--green);
+    color: white;
+}
+
+button.primary:hover {
+    background: #2e9f5e;
+}
+
+nav {
+    background: white;
+    padding: 15px;
+    display: flex;
+    gap: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--green);
+    font-weight: bold;
+}
+
+.list-item {
+    background: white;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
