@@ -1,4 +1,4 @@
-package com.workshop.wwc.user;
+package com.workshop.wwc.customer;
 
 import com.workshop.wwc.common.Auditable;
 import jakarta.persistence.Column;

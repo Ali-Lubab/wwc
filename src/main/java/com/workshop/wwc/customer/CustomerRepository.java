@@ -1,4 +1,4 @@
-package com.workshop.wwc.user;
+package com.workshop.wwc.customer;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;

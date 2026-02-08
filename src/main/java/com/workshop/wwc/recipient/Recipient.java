@@ -1,7 +1,7 @@
 package com.workshop.wwc.recipient;
 
 import com.workshop.wwc.common.Auditable;
-import com.workshop.wwc.user.Customer;
+import com.workshop.wwc.customer.Customer;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
