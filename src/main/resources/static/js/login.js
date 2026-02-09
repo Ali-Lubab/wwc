@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const customer = await apiRequest("/auth/login", "POST", {
                 email: document.getElementById("email").value,
                 password: document.getElementById("password").value
-            });
+            }, false);
             localStorage.setItem("customerId", customer.id);
             window.location.href = "home.html";
         } catch (error) {
