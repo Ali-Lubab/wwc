@@ -25,3 +25,7 @@ Implement the logic in ``TransferController`` that converts source currency to t
 Implement a functionality that calculates the exchange rate between two currencies. 
 This service should fetch the latest exchange rates from RateRepository and perform the necessary calculations to determine the exchange rate between the specified source and target currencies.
 Implement simple error handling for cases where the exchange rate is not available or if there are issues with fetching the data from the repository.
+
+### 4. Refactoring exchange rate business logic
+``TransferController`` and ``RateController`` currently contain business logic related to exchange rate calculations. 
+Refactor the code to move this logic into a separate service class, such as ``ExchangeRateService``.
