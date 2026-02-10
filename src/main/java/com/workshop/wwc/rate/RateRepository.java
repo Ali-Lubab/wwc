@@ -9,8 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,8 +25,6 @@ public class RateRepository {
         r.setSourceCurrency(rs.getString("source_currency"));
         r.setTargetCurrency(rs.getString("target_currency"));
         r.setRate(rs.getBigDecimal("rate"));
-        r.setCreatedAt(rs.getTimestamp("created_at").toInstant());
-        r.setUpdatedAt(rs.getTimestamp("updated_at").toInstant());
         return r;
     };
 
@@ -52,38 +48,28 @@ public class RateRepository {
     }
 
     public Rate save(Rate rate) {
-        Instant now = Instant.now();
-
         if (rate.getId() == null) {
             // INSERT
-            rate.setCreatedAt(now);
-            rate.setUpdatedAt(now);
-
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update(connection -> {
                 PreparedStatement ps = connection.prepareStatement(
-                        "INSERT INTO rate (source_currency, target_currency, rate, created_at, updated_at) "
-                                + "VALUES (?, ?, ?, ?, ?)",
+                        "INSERT INTO rate (source_currency, target_currency, rate) "
+                                + "VALUES (?, ?, ?)",
                         Statement.RETURN_GENERATED_KEYS
                 );
                 ps.setString(1, rate.getSourceCurrency());
                 ps.setString(2, rate.getTargetCurrency());
                 ps.setBigDecimal(3, rate.getRate());
-                ps.setTimestamp(4, Timestamp.from(rate.getCreatedAt()));
-                ps.setTimestamp(5, Timestamp.from(rate.getUpdatedAt()));
                 return ps;
             }, keyHolder);
 
             rate.setId(keyHolder.getKey().longValue());
         } else {
             // UPDATE
-            rate.setUpdatedAt(now);
-
             jdbcTemplate.update(
-                    "UPDATE rate SET source_currency = ?, target_currency = ?, rate = ?, updated_at = ? WHERE id = ?",
+                    "UPDATE rate SET source_currency = ?, target_currency = ?, rate = ? WHERE id = ?",
                     rate.getSourceCurrency(), rate.getTargetCurrency(),
-                    rate.getRate(), Timestamp.from(rate.getUpdatedAt()),
-                    rate.getId()
+                    rate.getRate(), rate.getId()
             );
         }
         return rate;

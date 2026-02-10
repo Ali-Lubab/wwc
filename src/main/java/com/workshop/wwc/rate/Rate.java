@@ -1,6 +1,5 @@
 package com.workshop.wwc.rate;
 
-import com.workshop.wwc.common.Auditable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +13,7 @@ import java.math.BigDecimal;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Rate extends Auditable {
+public class Rate {
 
     private Long id;
 

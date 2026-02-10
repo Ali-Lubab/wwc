@@ -1,6 +1,5 @@
 package com.workshop.wwc.recipient;
 
-import com.workshop.wwc.common.Auditable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +11,7 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Recipient extends Auditable {
+public class Recipient {
 
     private Long id;
 

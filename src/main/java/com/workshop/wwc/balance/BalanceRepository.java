@@ -9,8 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,8 +25,6 @@ public class BalanceRepository {
         b.setCurrency(rs.getString("currency"));
         b.setAmount(rs.getBigDecimal("amount"));
         b.setOwnerId(rs.getLong("owner_id"));
-        b.setCreatedAt(rs.getTimestamp("created_at").toInstant());
-        b.setUpdatedAt(rs.getTimestamp("updated_at").toInstant());
         return b;
     };
 
@@ -52,38 +48,28 @@ public class BalanceRepository {
     }
 
     public Balance save(Balance balance) {
-        Instant now = Instant.now();
-
         if (balance.getId() == null) {
             // INSERT
-            balance.setCreatedAt(now);
-            balance.setUpdatedAt(now);
-
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update(connection -> {
                 PreparedStatement ps = connection.prepareStatement(
-                        "INSERT INTO balance (currency, amount, owner_id, created_at, updated_at) "
-                                + "VALUES (?, ?, ?, ?, ?)",
+                        "INSERT INTO balance (currency, amount, owner_id) "
+                                + "VALUES (?, ?, ?)",
                         Statement.RETURN_GENERATED_KEYS
                 );
                 ps.setString(1, balance.getCurrency());
                 ps.setBigDecimal(2, balance.getAmount());
                 ps.setLong(3, balance.getOwnerId());
-                ps.setTimestamp(4, Timestamp.from(balance.getCreatedAt()));
-                ps.setTimestamp(5, Timestamp.from(balance.getUpdatedAt()));
                 return ps;
             }, keyHolder);
 
             balance.setId(keyHolder.getKey().longValue());
         } else {
             // UPDATE
-            balance.setUpdatedAt(now);
-
             jdbcTemplate.update(
-                    "UPDATE balance SET currency = ?, amount = ?, owner_id = ?, updated_at = ? WHERE id = ?",
+                    "UPDATE balance SET currency = ?, amount = ?, owner_id = ? WHERE id = ?",
                     balance.getCurrency(), balance.getAmount(),
-                    balance.getOwnerId(), Timestamp.from(balance.getUpdatedAt()),
-                    balance.getId()
+                    balance.getOwnerId(), balance.getId()
             );
         }
         return balance;

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,8 +29,6 @@ public class CustomerRepository {
         c.setAddress(rs.getString("address"));
         c.setEmailAddress(rs.getString("email_address"));
         c.setPassword(rs.getString("password"));
-        c.setCreatedAt(rs.getTimestamp("created_at").toInstant());
-        c.setUpdatedAt(rs.getTimestamp("updated_at").toInstant());
         return c;
     };
 
@@ -63,18 +60,13 @@ public class CustomerRepository {
     }
 
     public Customer save(Customer customer) {
-        Instant now = Instant.now();
-
         if (customer.getId() == null) {
             // INSERT new customer
-            customer.setCreatedAt(now);
-            customer.setUpdatedAt(now);
-
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update(connection -> {
                 PreparedStatement ps = connection.prepareStatement(
-                        "INSERT INTO customer (first_name, last_name, dob, address, email_address, password, created_at, updated_at) "
-                                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                        "INSERT INTO customer (first_name, last_name, dob, address, email_address, password) "
+                                + "VALUES (?, ?, ?, ?, ?, ?)",
                         Statement.RETURN_GENERATED_KEYS
                 );
                 ps.setString(1, customer.getFirstName());
@@ -83,23 +75,19 @@ public class CustomerRepository {
                 ps.setString(4, customer.getAddress());
                 ps.setString(5, customer.getEmailAddress());
                 ps.setString(6, customer.getPassword());
-                ps.setTimestamp(7, Timestamp.from(customer.getCreatedAt()));
-                ps.setTimestamp(8, Timestamp.from(customer.getUpdatedAt()));
                 return ps;
             }, keyHolder);
 
             customer.setId(keyHolder.getKey().longValue());
         } else {
             // UPDATE existing customer
-            customer.setUpdatedAt(now);
-
             jdbcTemplate.update(
                     "UPDATE customer SET first_name = ?, last_name = ?, dob = ?, address = ?, "
-                            + "email_address = ?, password = ?, updated_at = ? WHERE id = ?",
+                            + "email_address = ?, password = ? WHERE id = ?",
                     customer.getFirstName(), customer.getLastName(),
                     Timestamp.from(customer.getDob()), customer.getAddress(),
                     customer.getEmailAddress(), customer.getPassword(),
-                    Timestamp.from(customer.getUpdatedAt()), customer.getId()
+                    customer.getId()
             );
         }
         return customer;

@@ -1,6 +1,5 @@
 package com.workshop.wwc.balance;
 
-import com.workshop.wwc.common.Auditable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +13,7 @@ import java.math.BigDecimal;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Balance extends Auditable {
+public class Balance {
 
     private Long id;
 

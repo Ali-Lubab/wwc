@@ -1,6 +1,5 @@
 package com.workshop.wwc.customer;
 
-import com.workshop.wwc.common.Auditable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +13,7 @@ import java.time.Instant;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Customer extends Auditable {
+public class Customer {
 
     private Long id;
 

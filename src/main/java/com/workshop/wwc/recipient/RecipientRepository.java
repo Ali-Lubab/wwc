@@ -9,8 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,8 +28,6 @@ public class RecipientRepository {
         r.setAccountNumber(rs.getString("account_number"));
         r.setActive(rs.getBoolean("is_active"));
         r.setOwnerId(rs.getLong("owner_id"));
-        r.setCreatedAt(rs.getTimestamp("created_at").toInstant());
-        r.setUpdatedAt(rs.getTimestamp("updated_at").toInstant());
         return r;
     };
 
@@ -54,18 +50,13 @@ public class RecipientRepository {
     }
 
     public Recipient save(Recipient recipient) {
-        Instant now = Instant.now();
-
         if (recipient.getId() == null) {
             // INSERT
-            recipient.setCreatedAt(now);
-            recipient.setUpdatedAt(now);
-
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update(connection -> {
                 PreparedStatement ps = connection.prepareStatement(
-                        "INSERT INTO recipient (first_name, last_name, currency, account_number, is_active, owner_id, created_at, updated_at) "
-                                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                        "INSERT INTO recipient (first_name, last_name, currency, account_number, is_active, owner_id) "
+                                + "VALUES (?, ?, ?, ?, ?, ?)",
                         Statement.RETURN_GENERATED_KEYS
                 );
                 ps.setString(1, recipient.getFirstName());
@@ -74,23 +65,19 @@ public class RecipientRepository {
                 ps.setString(4, recipient.getAccountNumber());
                 ps.setBoolean(5, recipient.isActive());
                 ps.setLong(6, recipient.getOwnerId());
-                ps.setTimestamp(7, Timestamp.from(recipient.getCreatedAt()));
-                ps.setTimestamp(8, Timestamp.from(recipient.getUpdatedAt()));
                 return ps;
             }, keyHolder);
 
             recipient.setId(keyHolder.getKey().longValue());
         } else {
             // UPDATE
-            recipient.setUpdatedAt(now);
-
             jdbcTemplate.update(
                     "UPDATE recipient SET first_name = ?, last_name = ?, currency = ?, "
-                            + "account_number = ?, is_active = ?, owner_id = ?, updated_at = ? WHERE id = ?",
+                            + "account_number = ?, is_active = ?, owner_id = ? WHERE id = ?",
                     recipient.getFirstName(), recipient.getLastName(),
                     recipient.getCurrency(), recipient.getAccountNumber(),
                     recipient.isActive(), recipient.getOwnerId(),
-                    Timestamp.from(recipient.getUpdatedAt()), recipient.getId()
+                    recipient.getId()
             );
         }
         return recipient;
