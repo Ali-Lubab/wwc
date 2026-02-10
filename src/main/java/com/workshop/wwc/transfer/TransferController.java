@@ -1,5 +1,7 @@
 package com.workshop.wwc.transfer;
 
+import com.workshop.wwc.customer.CustomerRepository;
+import com.workshop.wwc.rate.RateRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,9 +20,14 @@ import java.util.List;
 public class TransferController {
 
     private final TransferRepository transferRepository;
+    private final RateRepository rateRepository;
 
     @PostMapping
     public Transfer create(@RequestBody Transfer transfer) {
+        var exchangeRate =
+                rateRepository.findBySourceCurrencyAndTargetCurrency(transfer.getSourceCurrency(), transfer.getTargetCurrency());
+        var targetAmount = transfer.getSourceAmount().multiply(exchangeRate.get().getRate());
+        transfer.setTargetAmount(targetAmount);
         return transferRepository.save(transfer);
     }
 

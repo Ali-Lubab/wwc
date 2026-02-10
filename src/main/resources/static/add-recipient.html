@@ -7,7 +7,7 @@
 <body>
 <h2>Add recipient</h2>
 
-<form onsubmit="addRecipient(event)">
+<form id="addRecipientForm">
     <input placeholder="First name" id="firstName" required><br>
     <input placeholder="Last name" id="lastName" required><br>
     <input placeholder="Currency" id="currency" required><br>
@@ -16,21 +16,22 @@
     <button>Add</button>
 </form>
 
-<script src="js/api.js"></script>
-<script>
-    async function addRecipient(e) {
+<script type="module">
+    import { apiRequest } from "./js/api.js";
+
+    document.getElementById("addRecipientForm").addEventListener("submit", async (e) => {
         e.preventDefault();
 
         await apiRequest("/recipients", "POST", {
-            firstName: firstName.value,
-            lastName: lastName.value,
-            currency: currency.value,
-            accountNumber: accountNumber.value,
-            owner: { id: sessionStorage.getItem("customerId") }
+            firstName: document.getElementById("firstName").value,
+            lastName: document.getElementById("lastName").value,
+            currency: document.getElementById("currency").value,
+            accountNumber: document.getElementById("accountNumber").value,
+            ownerId: localStorage.getItem("customerId")
         });
 
         window.location.href = "recipients.html";
-    }
+    });
 </script>
 </body>
 </html>

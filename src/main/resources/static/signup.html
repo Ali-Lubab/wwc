@@ -7,7 +7,7 @@
 <body>
 <h2>Create account</h2>
 
-<form onsubmit="signup(event)">
+<form id="signupForm">
     <input placeholder="First name" id="firstName" required><br>
     <input placeholder="Last name" id="lastName" required><br>
     <input type="date" id="dob" required><br>
@@ -17,23 +17,23 @@
     <button>Create</button>
 </form>
 
-<script type="module" src="js/api.js"></script>
-<script>
-    async function signup(e) {
+<script type="module">
+    import { apiRequest } from "./js/api.js";
+
+    document.getElementById("signupForm").addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const customer = {
-            firstName: firstName.value,
-            lastName: lastName.value,
-            dob: new Date(dob.value).toISOString(),
-            emailAddress: email.value,
-            password: password.value
-        };
+        await apiRequest("/customers", "POST", {
+            firstName: document.getElementById("firstName").value,
+            lastName: document.getElementById("lastName").value,
+            dob: new Date(document.getElementById("dob").value).toISOString(),
+            emailAddress: document.getElementById("email").value,
+            password: document.getElementById("password").value
+        }, false);
 
-        await apiRequest("/customers", "POST", customer);
         alert("Account created");
         window.location.href = "index.html";
-    }
+    });
 </script>
 </body>
 </html>

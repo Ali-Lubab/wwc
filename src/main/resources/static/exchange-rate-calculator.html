@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exchange Rate Calculator</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav>
+    <a href="home.html">Home</a>
+</nav>
+
+<h2>Exchange Rate Calculator</h2>
+
+<form id="calculatorForm">
+    <label for="sourceCurrency">Source currency</label>
+    <select id="sourceCurrency" required>
+        <option value="">Select source currency</option>
+    </select><br>
+
+    <label for="targetCurrency">Target currency</label>
+    <select id="targetCurrency" required disabled>
+        <option value="">Select target currency</option>
+    </select><br>
+
+    <input type="number" id="amount" placeholder="Amount" step="0.01" min="0.01" required><br><br>
+
+    <button class="primary">Convert</button>
+</form>
+
+<div id="result"></div>
+
+<script type="module">
+    import { apiRequest } from "./js/api.js";
+
+    const sourceSelect = document.getElementById("sourceCurrency");
+    const targetSelect = document.getElementById("targetCurrency");
+    const resultDiv = document.getElementById("result");
+
+    const sourceCurrencies = await apiRequest("/rates/source-currencies", "GET", null, false);
+    sourceCurrencies.forEach(c => {
+        sourceSelect.innerHTML += `<option value="${c}">${c}</option>`;
+    });
+
+    sourceSelect.addEventListener("change", async () => {
+        targetSelect.innerHTML = '<option value="">Select target currency</option>';
+        resultDiv.innerHTML = "";
+
+        const source = sourceSelect.value;
+        if (!source) {
+            targetSelect.disabled = true;
+            return;
+        }
+
+        const targetCurrencies = await apiRequest(`/rates/target-currencies/${source}`, "GET", null, false);
+        targetCurrencies.forEach(c => {
+            targetSelect.innerHTML += `<option value="${c}">${c}</option>`;
+        });
+        targetSelect.disabled = false;
+    });
+
+    document.getElementById("calculatorForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const source = sourceSelect.value;
+        const target = targetSelect.value;
+        const amount = document.getElementById("amount").value;
+
+        const data = await apiRequest(
+            `/rates/convert?source=${source}&target=${target}&amount=${amount}`,
+            "GET", null, false
+        );
+
+        resultDiv.innerHTML = `<div class="list-item">
+            <strong>${data.amount} ${data.source}</strong> = <strong>${data.result} ${data.target}</strong>
+            <br>Rate: ${data.rate}
+        </div>`;
+    });
+</script>
+</body>
+</html>
