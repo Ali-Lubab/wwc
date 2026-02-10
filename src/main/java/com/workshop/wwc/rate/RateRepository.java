@@ -51,20 +51,6 @@ public class RateRepository {
         return results.stream().findFirst();
     }
 
-    public List<String> findDistinctSourceCurrencies() {
-        return jdbcTemplate.queryForList(
-                "SELECT DISTINCT source_currency FROM rate ORDER BY source_currency",
-                String.class
-        );
-    }
-
-    public List<String> findTargetCurrenciesBySource(String sourceCurrency) {
-        return jdbcTemplate.queryForList(
-                "SELECT DISTINCT target_currency FROM rate WHERE source_currency = ? ORDER BY target_currency",
-                String.class, sourceCurrency
-        );
-    }
-
     public Rate save(Rate rate) {
         Instant now = Instant.now();
 

@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/rates")
@@ -40,30 +41,21 @@ public class RateController {
         return rateRepository.findAll();
     }
 
-    @GetMapping("/source-currencies")
-    public List<String> getSourceCurrencies() {
-        return rateRepository.findDistinctSourceCurrencies();
-    }
-
-    @GetMapping("/target-currencies/{sourceCurrency}")
-    public List<String> getTargetCurrencies(@PathVariable String sourceCurrency) {
-        return rateRepository.findTargetCurrenciesBySource(sourceCurrency);
-    }
-
     @GetMapping("/convert")
     public Map<String, Object> convert(
             @RequestParam String source,
             @RequestParam String target,
             @RequestParam BigDecimal amount) {
-        Rate rate = rateRepository.findBySourceCurrencyAndTargetCurrency(source, target)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Rate not found for " + source + " -> " + target));
-        BigDecimal result = amount.multiply(rate.getRate()).setScale(2, RoundingMode.HALF_UP);
+        Optional<Rate> rateOpt = rateRepository.findBySourceCurrencyAndTargetCurrency(source, target);
+        if (rateOpt.isEmpty()) {
+            return Map.of("error", "Exchange rate not found for " + source + " to " + target);
+        }
+        BigDecimal result = amount.multiply(rateOpt.get().getRate()).setScale(2, RoundingMode.HALF_UP);
         return Map.of(
                 "source", source,
                 "target", target,
                 "amount", amount,
-                "rate", rate.getRate(),
+                "rate", rateOpt.get().getRate(),
                 "result", result
         );
     }

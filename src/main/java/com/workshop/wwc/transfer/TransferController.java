@@ -1,6 +1,5 @@
 package com.workshop.wwc.transfer;
 
-import com.workshop.wwc.customer.CustomerRepository;
 import com.workshop.wwc.rate.RateRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

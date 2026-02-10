@@ -22,5 +22,6 @@ The field should be displayed in the recipient list and should be included in th
 Implement the logic in ``TransferController`` that converts source currency to target currency using the exchange rate from RateRepository.
 
 ### 3. Implement Exchange Rate Calculator
-Implement a service that calculates the exchange rate between two currencies. 
+Implement a functionality that calculates the exchange rate between two currencies. 
 This service should fetch the latest exchange rates from RateRepository and perform the necessary calculations to determine the exchange rate between the specified source and target currencies.
+Implement simple error handling for cases where the exchange rate is not available or if there are issues with fetching the data from the repository.
