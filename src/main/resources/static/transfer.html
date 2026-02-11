@@ -33,7 +33,6 @@
         e.preventDefault();
 
         await apiRequest("/transfers", "POST", {
-            senderId: localStorage.getItem("customerId"),
             recipientId: document.getElementById("recipientId").value,
             sourceAmount: document.getElementById("sourceAmount").value,
             sourceCurrency: document.getElementById("sourceCurrency").value,

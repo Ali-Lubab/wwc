@@ -25,6 +25,4 @@ public class Recipient {
 
     @Builder.Default
     private boolean isActive = true;
-
-    private Long ownerId;
 }

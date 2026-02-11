@@ -24,7 +24,6 @@ public class BalanceRepository {
         b.setId(rs.getLong("id"));
         b.setCurrency(rs.getString("currency"));
         b.setAmount(rs.getBigDecimal("amount"));
-        b.setOwnerId(rs.getLong("owner_id"));
         return b;
     };
 
@@ -39,10 +38,10 @@ public class BalanceRepository {
         return results.stream().findFirst();
     }
 
-    public Optional<Balance> findByOwnerIdAndCurrency(Long ownerId, String currency) {
+    public Optional<Balance> findByCurrency(String currency) {
         List<Balance> results = jdbcTemplate.query(
-                "SELECT * FROM balance WHERE owner_id = ? AND currency = ?",
-                rowMapper, ownerId, currency
+                "SELECT * FROM balance WHERE currency = ?",
+                rowMapper, currency
         );
         return results.stream().findFirst();
     }
@@ -53,13 +52,12 @@ public class BalanceRepository {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update(connection -> {
                 PreparedStatement ps = connection.prepareStatement(
-                        "INSERT INTO balance (currency, amount, owner_id) "
-                                + "VALUES (?, ?, ?)",
+                        "INSERT INTO balance (currency, amount) "
+                                + "VALUES (?, ?)",
                         Statement.RETURN_GENERATED_KEYS
                 );
                 ps.setString(1, balance.getCurrency());
                 ps.setBigDecimal(2, balance.getAmount());
-                ps.setLong(3, balance.getOwnerId());
                 return ps;
             }, keyHolder);
 
@@ -67,9 +65,9 @@ public class BalanceRepository {
         } else {
             // UPDATE
             jdbcTemplate.update(
-                    "UPDATE balance SET currency = ?, amount = ?, owner_id = ? WHERE id = ?",
+                    "UPDATE balance SET currency = ?, amount = ? WHERE id = ?",
                     balance.getCurrency(), balance.getAmount(),
-                    balance.getOwnerId(), balance.getId()
+                    balance.getId()
             );
         }
         return balance;

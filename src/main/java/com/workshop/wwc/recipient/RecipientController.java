@@ -17,13 +17,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RecipientController {
 
-    private static final Long DEFAULT_CUSTOMER_ID = 1L;
-
     private final RecipientRepository recipientRepository;
 
     @PostMapping
     public Recipient create(@RequestBody Recipient recipient) {
-        recipient.setOwnerId(DEFAULT_CUSTOMER_ID);
         return recipientRepository.save(recipient);
     }
 

@@ -18,14 +18,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TransferController {
 
-    private static final Long DEFAULT_CUSTOMER_ID = 1L;
-
     private final TransferRepository transferRepository;
     private final RateRepository rateRepository;
 
     @PostMapping
     public Transfer create(@RequestBody Transfer transfer) {
-        transfer.setSenderId(DEFAULT_CUSTOMER_ID);
         var exchangeRate =
                 rateRepository.findBySourceCurrencyAndTargetCurrency(transfer.getSourceCurrency(), transfer.getTargetCurrency());
         var targetAmount = transfer.getSourceAmount().multiply(exchangeRate.get().getRate());

@@ -17,13 +17,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BalanceController {
 
-    private static final Long DEFAULT_CUSTOMER_ID = 1L;
-
     private final BalanceRepository balanceRepository;
 
     @PostMapping
     public Balance create(@RequestBody Balance balance) {
-        balance.setOwnerId(DEFAULT_CUSTOMER_ID);
         return balanceRepository.save(balance);
     }
 
