@@ -2,9 +2,18 @@
 <html>
 <head>
     <title>New transfer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+<nav>
+    <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
+    <div class="nav-links">
+        <a href="home.html">Home</a>
+        <a href="recipients.html">Recipients</a>
+    </div>
+</nav>
+
 <h2>New transfer</h2>
 
 <form id="transferForm">
@@ -16,6 +25,7 @@
     <button>Send</button>
 </form>
 
+<script src="js/nav.js"></script>
 <script type="module">
     import { apiRequest } from "./js/api.js";
 

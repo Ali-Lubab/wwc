@@ -2,27 +2,34 @@
 <html>
 <head>
     <title>Recipients</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <nav>
-    <a href="home.html">Home</a>
-    <a href="add-recipient.html">Add recipient</a>
+    <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
+    <div class="nav-links">
+        <a href="home.html">Home</a>
+        <a href="add-recipient.html">Add recipient</a>
+    </div>
 </nav>
 
 <h2>Recipients</h2>
-<table id="recipients">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Currency</th>
-            <th>Account number</th>
-        </tr>
-    </thead>
-    <tbody></tbody>
-</table>
+<div class="table-container">
+    <table id="recipients">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Currency</th>
+                <th>Account number</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
 
+<script src="js/nav.js"></script>
 <script type="module" src="js/api.js"></script>
 <script type="module" src="js/recipients.js"></script>
 </body>
