@@ -46,13 +46,6 @@ public class TransferRepository {
         return results.stream().findFirst();
     }
 
-    public List<Transfer> findBySenderIdOrderByCreatedAtDesc(Long senderId) {
-        return jdbcTemplate.query(
-                "SELECT * FROM transfer WHERE sender_id = ? ORDER BY created_at DESC",
-                rowMapper, senderId
-        );
-    }
-
     public Transfer save(Transfer transfer) {
         Instant now = Instant.now();
 

@@ -1,6 +1,5 @@
 package com.workshop.wwc.recipient;
 
-import com.workshop.wwc.customer.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,11 +20,10 @@ public class RecipientController {
     private static final Long DEFAULT_CUSTOMER_ID = 1L;
 
     private final RecipientRepository recipientRepository;
-    private final CustomerRepository customerRepository;
 
     @PostMapping
     public Recipient create(@RequestBody Recipient recipient) {
-        recipient.setOwner(customerRepository.getReferenceById(DEFAULT_CUSTOMER_ID));
+        recipient.setOwnerId(DEFAULT_CUSTOMER_ID);
         return recipientRepository.save(recipient);
     }
 
@@ -38,6 +36,6 @@ public class RecipientController {
 
     @GetMapping
     public List<Recipient> getAll() {
-        return recipientRepository.findByOwnerIdAndIsActiveTrue(DEFAULT_CUSTOMER_ID);
+        return recipientRepository.findAll();
     }
 }

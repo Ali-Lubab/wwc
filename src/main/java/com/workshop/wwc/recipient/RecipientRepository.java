@@ -42,13 +42,6 @@ public class RecipientRepository {
         return results.stream().findFirst();
     }
 
-    public List<Recipient> findByOwnerIdAndIsActiveTrue(Long ownerId) {
-        return jdbcTemplate.query(
-                "SELECT * FROM recipient WHERE owner_id = ? AND is_active = TRUE",
-                rowMapper, ownerId
-        );
-    }
-
     public Recipient save(Recipient recipient) {
         if (recipient.getId() == null) {
             // INSERT
