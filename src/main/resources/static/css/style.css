@@ -74,3 +74,17 @@ nav a {
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.08);
 }
+
+table {
+    border-collapse: collapse;
+    margin: 16px;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px 16px;
+}
+
+th {
+    border-bottom: 2px solid var(--green);
+}

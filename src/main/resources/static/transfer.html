@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>New transfer</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<h2>New transfer</h2>
+
+<form id="transferForm">
+    <input placeholder="Recipient ID" id="recipientId" required><br>
+    <input placeholder="Source amount" id="sourceAmount" required><br>
+    <input placeholder="Source currency" id="sourceCurrency" required><br>
+    <input placeholder="Target currency" id="targetCurrency" required><br><br>
+
+    <button>Send</button>
+</form>
+
+<script type="module">
+    import { apiRequest } from "./js/api.js";
+
+    document.getElementById("transferForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        await apiRequest("/transfers", "POST", {
+            senderId: localStorage.getItem("customerId"),
+            recipientId: document.getElementById("recipientId").value,
+            sourceAmount: document.getElementById("sourceAmount").value,
+            sourceCurrency: document.getElementById("sourceCurrency").value,
+            targetCurrency: document.getElementById("targetCurrency").value
+        });
+
+        window.location.href = "home.html";
+    });
+</script>
+</body>
+</html>

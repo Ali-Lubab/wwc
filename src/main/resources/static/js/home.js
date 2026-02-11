@@ -10,7 +10,7 @@ async function loadBalances() {
     const container = document.getElementById("balances");
 
     balances
-        .filter(b => b.owner.id == customerId)
+        .filter(b => b.ownerId == customerId)
         .forEach(b => {
             container.innerHTML += `<div>${b.amount} ${b.currency}</div>`;
         });
@@ -21,7 +21,7 @@ async function loadTransfers() {
     const container = document.getElementById("transfers");
 
     transfers
-        .filter(t => t.sender.id == customerId)
+        .filter(t => t.senderId == customerId)
         .forEach(t => {
             container.innerHTML += `<div>
                 ${t.sourceAmount} ${t.sourceCurrency} → ${t.targetAmount} ${t.targetCurrency}
