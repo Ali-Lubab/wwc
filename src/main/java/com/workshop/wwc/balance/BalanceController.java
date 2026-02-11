@@ -1,5 +1,6 @@
 package com.workshop.wwc.balance;
 
+import com.workshop.wwc.customer.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,23 +18,28 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BalanceController {
 
+    private static final Long DEFAULT_CUSTOMER_ID = 1L;
+
     private final BalanceRepository balanceRepository;
+    private final CustomerRepository customerRepository;
 
     @PostMapping
     public Balance create(@RequestBody Balance balance) {
+        balance.setOwner(customerRepository.getReferenceById(DEFAULT_CUSTOMER_ID));
         return balanceRepository.save(balance);
     }
 
     @GetMapping("/{id}")
     public Balance getById(@PathVariable Long id) {
-        Balance balanceNotFound = balanceRepository.findById(id)
+        return balanceRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Balance not found"));
-        return balanceNotFound;
     }
 
     @GetMapping
     public List<Balance> getAll() {
-        return balanceRepository.findAll();
+        return balanceRepository.findAll().stream()
+                .filter(b -> b.getOwner().getId().equals(DEFAULT_CUSTOMER_ID))
+                .toList();
     }
 }
