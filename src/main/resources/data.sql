@@ -1,50 +1,21 @@
-MERGE INTO customer
-(id, first_name, last_name, dob, address, email_address, password)
+INSERT INTO balance
+(id, currency, amount)
 VALUES
-(1, 'Justin', 'Cantery', '2002-05-14 00:00:00', 'Budapest', 'justin@test.com', 'pass123'),
-(2, 'Sara', 'Muller', '1998-11-22 00:00:00', 'Berlin', 'sara@test.com', 'pass123'),
-(3, 'John', 'Doe', '1990-01-10 00:00:00', 'London', 'john@test.com', 'pass123'),
-(4, 'Jane', 'Doe', '1992-03-05 00:00:00', 'Paris', 'jane@test.com', 'pass123'),
-(5, 'Michael', 'Scott', '1975-03-15 00:00:00', 'Scranton', 'michael@test.com', 'pass123'),
-(6, 'Dwight', 'Schrute', '1978-01-20 00:00:00', 'Scranton', 'dwight@test.com', 'pass123'),
-(7, 'Pam', 'Beesly', '1981-03-25 00:00:00', 'Scranton', 'pam@test.com', 'pass123'),
-(8, 'Jim', 'Halpert', '1979-10-01 00:00:00', 'Scranton', 'jim@test.com', 'pass123'),
-(9, 'Ryan', 'Howard', '1984-05-05 00:00:00', 'New York', 'ryan@test.com', 'pass123'),
-(10, 'Kelly', 'Kapoor', '1980-02-05 00:00:00', 'New York', 'kelly@test.com', 'pass123');
-MERGE INTO balance
-(id, currency, amount, owner_id)
+(1, 'EUR', 1200.00),
+(2, 'USD', 500.00),
+(3, 'GBP', 300.00),
+(4, 'HUF', 150000.00);
+
+INSERT INTO recipient
+(id, first_name, last_name, currency, account_number, is_active)
 VALUES
-(1, 'EUR', 1200.00, 1),
-(2, 'USD', 500.00, 1),
-(3, 'EUR', 800.00, 2),
-(4, 'USD', 1500.00, 3),
-(5, 'GBP', 300.00, 3),
-(6, 'EUR', 2200.00, 4),
-(7, 'USD', 900.00, 5),
-(8, 'EUR', 1100.00, 6),
-(9, 'USD', 700.00, 7),
-(10, 'EUR', 600.00, 8),
-(11, 'USD', 400.00, 9),
-(12, 'EUR', 950.00, 10),
-(13, 'GBP', 120.00, 1),
-(14, 'USD', 300.00, 2),
-(15, 'EUR', 500.00, 3);
-MERGE INTO recipient
-(id, first_name, last_name, currency, account_number, is_active, owner_id)
-VALUES
-(1, 'John', 'Doe', 'EUR', 'DE111', TRUE, 1),
-(2, 'Jane', 'Doe', 'USD', 'US222', TRUE, 1),
-(3, 'Michael', 'Scott', 'USD', 'US333', TRUE, 2),
-(4, 'Pam', 'Beesly', 'EUR', 'DE444', TRUE, 3),
-(5, 'Jim', 'Halpert', 'USD', 'US555', TRUE, 4),
-(6, 'Dwight', 'Schrute', 'EUR', 'DE666', TRUE, 5),
-(7, 'Ryan', 'Howard', 'USD', 'US777', TRUE, 6),
-(8, 'Kelly', 'Kapoor', 'EUR', 'DE888', TRUE, 7),
-(9, 'Sara', 'Muller', 'EUR', 'DE999', TRUE, 8),
-(10, 'Justin', 'Cantery', 'USD', 'US101', TRUE, 9),
-(11, 'Jane', 'Smith', 'EUR', 'DE202', TRUE, 10),
-(12, 'John', 'Smith', 'USD', 'US303', TRUE, 2);
-MERGE INTO rate
+(1, 'John', 'Doe', 'EUR', 'DE111', TRUE),
+(2, 'Jane', 'Doe', 'USD', 'US222', TRUE),
+(3, 'Michael', 'Scott', 'USD', 'US333', TRUE),
+(4, 'Pam', 'Beesly', 'EUR', 'DE444', TRUE),
+(5, 'Jim', 'Halpert', 'GBP', 'GB555', TRUE);
+
+INSERT INTO rate
 (id, source_currency, target_currency, rate)
 VALUES
 (1, 'EUR', 'USD', 1.08540000),
@@ -57,27 +28,15 @@ VALUES
 (8, 'HUF', 'EUR', 0.00256000),
 (9, 'USD', 'HUF', 360.10000000),
 (10, 'HUF', 'USD', 0.00277500);
-MERGE INTO transfer
-(id, sender_id, recipient_id, source_amount, source_currency, target_amount, target_currency, created_at, updated_at)
-VALUES
-(1, 1, 1, 100.00, 'EUR', 108.54, 'USD', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(2, 1, 2, 50.00, 'USD', 46.05, 'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(3, 2, 3, 200.00, 'EUR', 217.08, 'USD', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(4, 3, 4, 75.00, 'GBP', 87.15, 'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(5, 4, 5, 120.00, 'USD', 94.80, 'GBP', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(6, 5, 6, 300.00, 'USD', 276.30, 'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(7, 6, 7, 50.00, 'EUR', 54.27, 'USD', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(8, 7, 8, 90.00, 'USD', 82.89, 'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(9, 8, 9, 60.00, 'EUR', 65.12, 'USD', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(10, 9, 10, 150.00, 'USD', 138.15, 'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(11, 10, 11, 80.00, 'EUR', 86.83, 'USD', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(12, 2, 12, 40.00, 'USD', 36.84, 'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(13, 3, 1, 110.00, 'EUR', 119.39, 'USD', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(14, 4, 2, 95.00, 'USD', 87.50, 'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(15, 5, 3, 60.00, 'GBP', 69.72, 'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-ALTER TABLE customer ALTER COLUMN id RESTART WITH 11;
-ALTER TABLE balance ALTER COLUMN id RESTART WITH 16;
-ALTER TABLE recipient ALTER COLUMN id RESTART WITH 13;
+INSERT INTO transfer
+(id, recipient_id, source_amount, source_currency, target_amount, target_currency, created_at, updated_at)
+VALUES
+(1, 1, 100.00, 'EUR', 108.54, 'USD', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(2, 2, 50.00, 'USD', 46.05, 'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(3, 3, 200.00, 'EUR', 217.08, 'USD', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+ALTER TABLE balance ALTER COLUMN id RESTART WITH 5;
+ALTER TABLE recipient ALTER COLUMN id RESTART WITH 6;
 ALTER TABLE rate ALTER COLUMN id RESTART WITH 11;
-ALTER TABLE transfer ALTER COLUMN id RESTART WITH 16;
+ALTER TABLE transfer ALTER COLUMN id RESTART WITH 4;

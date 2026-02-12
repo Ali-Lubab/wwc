@@ -2,11 +2,15 @@
 <html>
 <head>
     <title>Exchange Rate Calculator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <nav>
-    <a href="home.html">Home</a>
+    <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
+    <div class="nav-links">
+        <a href="home.html">Home</a>
+    </div>
 </nav>
 
 <h2>Exchange Rate Calculator</h2>
@@ -21,6 +25,7 @@
 
 <div id="result"></div>
 
+<script src="js/nav.js"></script>
 <script type="module">
     import { apiRequest } from "./js/api.js";
 

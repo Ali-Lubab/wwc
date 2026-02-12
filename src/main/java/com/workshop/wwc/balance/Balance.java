@@ -20,6 +20,4 @@ public class Balance {
     private String currency;
 
     private BigDecimal amount;
-
-    private Long ownerId;
 }

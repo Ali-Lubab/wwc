@@ -42,4 +42,3 @@ public class TransferController {
         return transferRepository.findAll();
     }
 }
-
