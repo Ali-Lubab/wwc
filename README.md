@@ -6,7 +6,15 @@
 - Install Lombok plugin in Intellij and enable annotation processing in settings
 
 ## Basic commands
-- `./gradlew bootRun` starts spring boot application
+- `./gradlew bootRun` starts spring boot application.
+- `./gradlew clean` clears the build directory.
+- `./grardlew build` builds the project.
+- `--info` at the end of gradle commands shows more detailed logs.
+
+## Useful Intellij shortcuts
+- Press `option` and `F12` at the same time to open the terminal. 
+- Double press any of the `shift` buttons to look up a file.
+- In `.java` files, hold `command` button on your keyboard and click on a variable name to go to the declaration.
 
 ## Logging in to H2 DB console
 - Open http://localhost:8080/h2-console in your browser
@@ -24,7 +32,7 @@
 ![db_design.png](docs/images/db_design.png)
 
 ## Tasks
-
+This is a money transfer application. The aim is to be able to create a recipient, check currency exchange rates and create a transfer. 
 ### 1. Modify the ``Recipient`` entity to include a new field called ``email`` of type ``String``. 
 Ensure that this field is properly mapped to the database and can be used for storing the recipient's email address.
 Ensure that the appropriate service fetches the data from database.
@@ -41,3 +49,9 @@ Implement simple error handling for cases where the exchange rate is not availab
 ### 4. Refactoring exchange rate business logic
 ``TransferController`` and ``RateController`` currently contain business logic related to exchange rate calculations. 
 Refactor the code to move this logic into a separate service class, such as ``ExchangeRateService``.
+
+### 5. Implement drop-down based exchange rate
+Use a drop-down menu to select currencies on the exchange rate calculator. The calculator should only show supported currency pairs. 
+- 5.a. Implement an endpoint to return the list of all available source currencies. 
+- 5.b. Implement an endpoint to return a list of all available target currencies for a certain source currency.
+- 5.c. Update ``exchange-rate-calculator.html`` to use ``<select>`` tag with ``<option>`` inside it to list currencies.
