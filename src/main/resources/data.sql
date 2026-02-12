@@ -1,4 +1,4 @@
-INSERT INTO balance
+MERGE INTO balance
 (id, currency, amount)
 VALUES
 (1, 'EUR', 1200.00),
@@ -6,7 +6,7 @@ VALUES
 (3, 'GBP', 300.00),
 (4, 'HUF', 150000.00);
 
-INSERT INTO recipient
+MERGE INTO recipient
 (id, first_name, last_name, currency, account_number, is_active)
 VALUES
 (1, 'John', 'Doe', 'EUR', 'DE111', TRUE),
@@ -15,7 +15,7 @@ VALUES
 (4, 'Pam', 'Beesly', 'EUR', 'DE444', TRUE),
 (5, 'Jim', 'Halpert', 'GBP', 'GB555', TRUE);
 
-INSERT INTO rate
+MERGE INTO rate
 (id, source_currency, target_currency, rate)
 VALUES
 (1, 'EUR', 'USD', 1.08540000),
@@ -29,7 +29,7 @@ VALUES
 (9, 'USD', 'HUF', 360.10000000),
 (10, 'HUF', 'USD', 0.00277500);
 
-INSERT INTO transfer
+MERGE INTO transfer
 (id, recipient_id, source_amount, source_currency, target_amount, target_currency, created_at, updated_at)
 VALUES
 (1, 1, 100.00, 'EUR', 108.54, 'USD', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
