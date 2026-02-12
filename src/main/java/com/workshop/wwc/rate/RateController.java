@@ -59,4 +59,17 @@ public class RateController {
                 "result", result
         );
     }
+
+    @GetMapping("/currencies")
+    public List<String> getAvailableCurrencies() {
+        return rateRepository.getAllAvailableCurrencies();
+    }
+
+    @GetMapping("/targetCurrencies/{ccy}")
+    public List<String> getAvailableTargetCurrencies(@PathVariable String ccy) {
+        if (!rateRepository.getAllAvailableCurrencies().contains(ccy)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid source currency");
+        }
+        return rateRepository.getAllTargetCurrenciesFor(ccy);
+    }
 }
