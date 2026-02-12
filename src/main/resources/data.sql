@@ -1,4 +1,4 @@
-INSERT INTO customer
+MERGE INTO customer
 (id, first_name, last_name, dob, address, email_address, password)
 VALUES
 (1, 'Justin', 'Cantery', '2002-05-14 00:00:00', 'Budapest', 'justin@test.com', 'pass123'),
@@ -11,7 +11,7 @@ VALUES
 (8, 'Jim', 'Halpert', '1979-10-01 00:00:00', 'Scranton', 'jim@test.com', 'pass123'),
 (9, 'Ryan', 'Howard', '1984-05-05 00:00:00', 'New York', 'ryan@test.com', 'pass123'),
 (10, 'Kelly', 'Kapoor', '1980-02-05 00:00:00', 'New York', 'kelly@test.com', 'pass123');
-INSERT INTO balance
+MERGE INTO balance
 (id, currency, amount, owner_id)
 VALUES
 (1, 'EUR', 1200.00, 1),
@@ -29,7 +29,7 @@ VALUES
 (13, 'GBP', 120.00, 1),
 (14, 'USD', 300.00, 2),
 (15, 'EUR', 500.00, 3);
-INSERT INTO recipient
+MERGE INTO recipient
 (id, first_name, last_name, currency, account_number, is_active, owner_id)
 VALUES
 (1, 'John', 'Doe', 'EUR', 'DE111', TRUE, 1),
@@ -44,7 +44,7 @@ VALUES
 (10, 'Justin', 'Cantery', 'USD', 'US101', TRUE, 9),
 (11, 'Jane', 'Smith', 'EUR', 'DE202', TRUE, 10),
 (12, 'John', 'Smith', 'USD', 'US303', TRUE, 2);
-INSERT INTO rate
+MERGE INTO rate
 (id, source_currency, target_currency, rate)
 VALUES
 (1, 'EUR', 'USD', 1.08540000),
@@ -57,7 +57,7 @@ VALUES
 (8, 'HUF', 'EUR', 0.00256000),
 (9, 'USD', 'HUF', 360.10000000),
 (10, 'HUF', 'USD', 0.00277500);
-INSERT INTO transfer
+MERGE INTO transfer
 (id, sender_id, recipient_id, source_amount, source_currency, target_amount, target_currency, created_at, updated_at)
 VALUES
 (1, 1, 1, 100.00, 'EUR', 108.54, 'USD', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
