@@ -16,6 +16,8 @@
   - **Password**: `admin`
   - Make sure to select the correct JDBC URL and provide the correct username and password to access the H2 database console.
   - Once logged in, you can execute SQL queries to interact with the database and view the data stored in the tables.
+- **You can reset the database by deleting the `data` folder in the project directory. This will remove all existing data and allow you to start with a fresh database when you run the application again.**
+
 ![h2_console.png](docs/images/h2_console.png)
   
 ## DB design
