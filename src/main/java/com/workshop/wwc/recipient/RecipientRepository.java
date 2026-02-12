@@ -27,7 +27,6 @@ public class RecipientRepository {
         r.setCurrency(rs.getString("currency"));
         r.setAccountNumber(rs.getString("account_number"));
         r.setActive(rs.getBoolean("is_active"));
-        r.setOwnerId(rs.getLong("owner_id"));
         return r;
     };
 
@@ -42,21 +41,14 @@ public class RecipientRepository {
         return results.stream().findFirst();
     }
 
-    public List<Recipient> findByOwnerIdAndIsActiveTrue(Long ownerId) {
-        return jdbcTemplate.query(
-                "SELECT * FROM recipient WHERE owner_id = ? AND is_active = TRUE",
-                rowMapper, ownerId
-        );
-    }
-
     public Recipient save(Recipient recipient) {
         if (recipient.getId() == null) {
             // INSERT
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update(connection -> {
                 PreparedStatement ps = connection.prepareStatement(
-                        "INSERT INTO recipient (first_name, last_name, currency, account_number, is_active, owner_id) "
-                                + "VALUES (?, ?, ?, ?, ?, ?)",
+                        "INSERT INTO recipient (first_name, last_name, currency, account_number, is_active) "
+                                + "VALUES (?, ?, ?, ?, ?)",
                         Statement.RETURN_GENERATED_KEYS
                 );
                 ps.setString(1, recipient.getFirstName());
@@ -64,7 +56,6 @@ public class RecipientRepository {
                 ps.setString(3, recipient.getCurrency());
                 ps.setString(4, recipient.getAccountNumber());
                 ps.setBoolean(5, recipient.isActive());
-                ps.setLong(6, recipient.getOwnerId());
                 return ps;
             }, keyHolder);
 
@@ -73,10 +64,10 @@ public class RecipientRepository {
             // UPDATE
             jdbcTemplate.update(
                     "UPDATE recipient SET first_name = ?, last_name = ?, currency = ?, "
-                            + "account_number = ?, is_active = ?, owner_id = ? WHERE id = ?",
+                            + "account_number = ?, is_active = ? WHERE id = ?",
                     recipient.getFirstName(), recipient.getLastName(),
                     recipient.getCurrency(), recipient.getAccountNumber(),
-                    recipient.isActive(), recipient.getOwnerId(),
+                    recipient.isActive(),
                     recipient.getId()
             );
         }

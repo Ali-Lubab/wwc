@@ -36,4 +36,3 @@ public class RecipientController {
         return recipientRepository.findAll();
     }
 }
-

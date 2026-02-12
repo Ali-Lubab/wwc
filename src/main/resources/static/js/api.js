@@ -1,12 +1,6 @@
-import { requireAuth } from "./auth.js";
-
 const API_BASE = "http://localhost:8080";
 
-export async function apiRequest(path, method = "GET", body, requireAuthentication = true) {
-    if (requireAuthentication) {
-        requireAuth();
-    }
-
+export async function apiRequest(path, method = "GET", body) {
     const options = {
         method,
         headers: { "Content-Type": "application/json" }

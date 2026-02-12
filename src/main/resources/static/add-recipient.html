@@ -2,9 +2,18 @@
 <html>
 <head>
     <title>Add recipient</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+<nav>
+    <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
+    <div class="nav-links">
+        <a href="home.html">Home</a>
+        <a href="recipients.html">Recipients</a>
+    </div>
+</nav>
+
 <h2>Add recipient</h2>
 
 <form id="addRecipientForm">
@@ -16,6 +25,7 @@
     <button>Add</button>
 </form>
 
+<script src="js/nav.js"></script>
 <script type="module">
     import { apiRequest } from "./js/api.js";
 
@@ -26,8 +36,7 @@
             firstName: document.getElementById("firstName").value,
             lastName: document.getElementById("lastName").value,
             currency: document.getElementById("currency").value,
-            accountNumber: document.getElementById("accountNumber").value,
-            ownerId: localStorage.getItem("customerId")
+            accountNumber: document.getElementById("accountNumber").value
         });
 
         window.location.href = "recipients.html";

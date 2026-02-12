@@ -26,10 +26,9 @@ public class BalanceController {
 
     @GetMapping("/{id}")
     public Balance getById(@PathVariable Long id) {
-        Balance balanceNotFound = balanceRepository.findById(id)
+        return balanceRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Balance not found"));
-        return balanceNotFound;
     }
 
     @GetMapping

@@ -2,15 +2,18 @@
 <html>
 <head>
     <title>Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <nav>
-    <a href="home.html">Home</a>
-    <a href="add-money.html">Add money</a>
-    <a href="transfer.html">New transfer</a>
-    <a href="exchange-rate-calculator.html">Exchange rate calculator</a>
-    <a href="recipients.html">Recipients</a>
+    <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
+    <div class="nav-links">
+        <a href="home.html">Home</a>
+        <a href="transfer.html">New transfer</a>
+        <a href="exchange-rate-calculator.html">Exchange rate calculator</a>
+        <a href="recipients.html">Recipients</a>
+    </div>
 </nav>
 
 <h3>Balances</h3>
@@ -19,12 +22,7 @@
 <h3>Transfers</h3>
 <div id="transfers"></div>
 
-<form id="logoutForm">
-    <button class="primary">Log out</button>
-</form>
-
-<script type="module" src="js/api.js"></script>
+<script src="js/nav.js"></script>
 <script type="module" src="js/home.js"></script>
-<script type="module" src="js/logout.js"></script>
 </body>
 </html>

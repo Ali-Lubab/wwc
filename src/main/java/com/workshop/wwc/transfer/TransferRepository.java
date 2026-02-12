@@ -24,7 +24,6 @@ public class TransferRepository {
     private final RowMapper<Transfer> rowMapper = (rs, rowNum) -> {
         Transfer t = new Transfer();
         t.setId(rs.getLong("id"));
-        t.setSenderId(rs.getLong("sender_id"));
         t.setRecipientId(rs.getLong("recipient_id"));
         t.setSourceAmount(rs.getBigDecimal("source_amount"));
         t.setSourceCurrency(rs.getString("source_currency"));
@@ -46,13 +45,6 @@ public class TransferRepository {
         return results.stream().findFirst();
     }
 
-    public List<Transfer> findBySenderIdOrderByCreatedAtDesc(Long senderId) {
-        return jdbcTemplate.query(
-                "SELECT * FROM transfer WHERE sender_id = ? ORDER BY created_at DESC",
-                rowMapper, senderId
-        );
-    }
-
     public Transfer save(Transfer transfer) {
         Instant now = Instant.now();
 
@@ -64,18 +56,17 @@ public class TransferRepository {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update(connection -> {
                 PreparedStatement ps = connection.prepareStatement(
-                        "INSERT INTO transfer (sender_id, recipient_id, source_amount, source_currency, target_amount, target_currency, created_at, updated_at) "
-                                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                        "INSERT INTO transfer (recipient_id, source_amount, source_currency, target_amount, target_currency, created_at, updated_at) "
+                                + "VALUES (?, ?, ?, ?, ?, ?, ?)",
                         Statement.RETURN_GENERATED_KEYS
                 );
-                ps.setLong(1, transfer.getSenderId());
-                ps.setLong(2, transfer.getRecipientId());
-                ps.setBigDecimal(3, transfer.getSourceAmount());
-                ps.setString(4, transfer.getSourceCurrency());
-                ps.setBigDecimal(5, transfer.getTargetAmount());
-                ps.setString(6, transfer.getTargetCurrency());
-                ps.setTimestamp(7, Timestamp.from(transfer.getCreatedAt()));
-                ps.setTimestamp(8, Timestamp.from(transfer.getUpdatedAt()));
+                ps.setLong(1, transfer.getRecipientId());
+                ps.setBigDecimal(2, transfer.getSourceAmount());
+                ps.setString(3, transfer.getSourceCurrency());
+                ps.setBigDecimal(4, transfer.getTargetAmount());
+                ps.setString(5, transfer.getTargetCurrency());
+                ps.setTimestamp(6, Timestamp.from(transfer.getCreatedAt()));
+                ps.setTimestamp(7, Timestamp.from(transfer.getUpdatedAt()));
                 return ps;
             }, keyHolder);
 
@@ -85,9 +76,9 @@ public class TransferRepository {
             transfer.setUpdatedAt(now);
 
             jdbcTemplate.update(
-                    "UPDATE transfer SET sender_id = ?, recipient_id = ?, source_amount = ?, "
+                    "UPDATE transfer SET recipient_id = ?, source_amount = ?, "
                             + "source_currency = ?, target_amount = ?, target_currency = ?, updated_at = ? WHERE id = ?",
-                    transfer.getSenderId(), transfer.getRecipientId(),
+                    transfer.getRecipientId(),
                     transfer.getSourceAmount(), transfer.getSourceCurrency(),
                     transfer.getTargetAmount(), transfer.getTargetCurrency(),
                     Timestamp.from(transfer.getUpdatedAt()), transfer.getId()

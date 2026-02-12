@@ -18,8 +18,6 @@ public class Transfer {
 
     private Long id;
 
-    private Long senderId;
-
     private Long recipientId;
 
     private BigDecimal sourceAmount;
