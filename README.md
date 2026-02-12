@@ -10,6 +10,7 @@
 - `./gradlew clean` clears the build directory.
 - `./grardlew build` builds the project.
 - `--info` at the end of gradle commands shows more detailed logs.
+- `ctrl` + `c` in the terminal exits running command.
 
 ## Useful Intellij shortcuts
 - Press `option` and `F12` at the same time to open the terminal. 
