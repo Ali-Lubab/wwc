@@ -89,12 +89,53 @@ Complete the money transfer functionality so that when a transfer is created, th
 3. Verify the EUR balance decreased by the source amount
 4. Try to create a transfer larger than your remaining balance - it should fail
 
-### 4. Refactoring exchange rate business logic
-``TransferController`` and ``RateController`` currently contain business logic related to exchange rate calculations. 
-Refactor the code to move this logic into a separate service class, such as ``ExchangeRateService``.
+### 4. Refactor Exchange Rate Logic into a Service
+Extract the exchange rate business logic from controllers into a dedicated service class. This follows the single responsibility principle and makes the code more maintainable and testable.
 
-### 5. Implement drop-down based exchange rate
-Use a drop-down menu to select currencies on the exchange rate calculator. The calculator should only show supported currency pairs. 
-- 5.a. Implement an endpoint to return the list of all available source currencies. 
-- 5.b. Implement an endpoint to return a list of all available target currencies for a certain source currency.
-- 5.c. Update ``exchange-rate-calculator.html`` to use ``<select>`` tag with ``<option>`` inside it to list currencies.
+**Why this matters:** Controllers should only handle HTTP requests/responses. Business logic (like currency conversion calculations) belongs in service classes. This separation makes code easier to test and reuse.
+
+**What you need to do:**
+- Create a new class `ExchangeRateService.java` in the `rate` package
+- Add the `@Service` annotation to make it a Spring-managed bean
+- Move the conversion logic from `RateController` into a method like `convert(String source, String target, BigDecimal amount)`
+- Move the rate lookup and calculation logic from `TransferController` into a method like `calculateTargetAmount(String source, String target, BigDecimal amount)`
+- Inject `RateRepository` into the service
+- Update `RateController` and `TransferController` to inject and use `ExchangeRateService` instead of containing the logic directly
+
+**Files to create:** `ExchangeRateService.java`
+
+**Files to modify:** `RateController.java`, `TransferController.java`
+
+**Test it:** Verify that the exchange rate calculator and transfer creation still work exactly as before.
+
+### 5. Implement Currency Drop-downs for Exchange Rate Calculator
+Replace the text input fields for currencies with drop-down menus that only show valid currency pairs. This improves user experience by preventing invalid currency selections.
+
+**What you need to do:**
+
+**5.a. Create endpoint for available source currencies**
+- Add a new endpoint `GET /rates/sources` in `RateController`
+- Query all rates from `RateRepository.findAll()`
+- Extract and return a list of unique source currencies (e.g., `["EUR", "USD", "GBP", "HUF"]`)
+
+**5.b. Create endpoint for available target currencies**
+- Add a new endpoint `GET /rates/targets?source={currency}` in `RateController`
+- Query rates that match the given source currency
+- Return a list of available target currencies for that source (e.g., for EUR: `["USD", "GBP", "HUF"]`)
+
+**5.c. Update the HTML to use drop-downs**
+- In `exchange-rate-calculator.html`, replace the text inputs with `<select>` elements
+- Create a new JavaScript file `js/calculator.js` to:
+  - On page load, fetch `/rates/sources` and populate the source currency drop-down
+  - When source currency changes, fetch `/rates/targets?source=XXX` and populate the target currency drop-down
+- Make sure the form submission still works with the new select elements
+
+**Files to modify:** `RateController.java`, `exchange-rate-calculator.html`
+
+**Files to create:** `js/calculator.js`
+
+**Test it:**
+1. Open the exchange rate calculator page
+2. The source currency drop-down should show all available currencies
+3. Select a source currency - the target drop-down should update to show only valid pairs
+4. Perform a conversion and verify it still works
