@@ -33,10 +33,6 @@
 ![db_design.png](docs/images/db_design.png)
 
 ## Tasks
-
-
-
-## Tasks
 This is a money transfer application. The aim is to be able to create a recipient, check currency exchange rates and create a transfer. 
 
 ### 1. Implement Exchange Rate Calculator
