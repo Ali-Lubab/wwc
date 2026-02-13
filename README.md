@@ -33,19 +33,61 @@
 ![db_design.png](docs/images/db_design.png)
 
 ## Tasks
+
+
+
+## Tasks
 This is a money transfer application. The aim is to be able to create a recipient, check currency exchange rates and create a transfer. 
-### 1. Modify the ``Recipient`` entity to include a new field called ``email`` of type ``String``. 
-Ensure that this field is properly mapped to the database and can be used for storing the recipient's email address.
-Ensure that the appropriate service fetches the data from database.
-The field should be displayed in the recipient list and should be included in the recipient details view.
 
-### 2.  Implement transfer creation functionality in the application.
-Implement the logic in ``TransferController`` that converts source currency to target currency using the exchange rate from RateRepository.
+### 1. Implement Exchange Rate Calculator
+Build a currency conversion feature that allows users to calculate how much money they will receive when exchanging between currencies.
 
-### 3. Implement Exchange Rate Calculator
-Implement a functionality that calculates the exchange rate between two currencies. 
-This service should fetch the latest exchange rates from RateRepository and perform the necessary calculations to determine the exchange rate between the specified source and target currencies.
-Implement simple error handling for cases where the exchange rate is not available or if there are issues with fetching the data from the repository.
+**What you need to do:**
+- Create a new endpoint in `RateController` (e.g., `GET /rates/convert`) that accepts source currency, target currency, and amount as parameters
+- Look up the exchange rate from `RateRepository` using `findBySourceCurrencyAndTargetCurrency()`
+- Calculate the converted amount by multiplying the input amount by the rate
+- Return the result (original amount, converted amount, rate used, and currencies)
+- Handle the case where a currency pair doesn't exist (return an appropriate error message)
+
+**Files to modify:** `RateController.java`
+
+**Test it:** Open `exchange-rate-calculator.html` in the browser and try converting 100 EUR to USD.
+
+### 2. Add Email Field to Recipient
+Extend the Recipient entity to store email addresses, allowing users to associate contact information with their recipients.
+
+**What you need to do:**
+- Add a new `email` field (type `String`) to the `Recipient` entity class
+- Update `schema.sql` to add an `email` column to the recipient table
+- Update `data.sql` to include sample email values for existing recipients
+- Update `RecipientRepository` to include the email field in the row mapper, INSERT, and UPDATE statements
+- Update `recipients.html` to display the email column in the table
+- Update `add-recipient.html` to include an email input field in the form
+
+**Files to modify:** `Recipient.java`, `RecipientRepository.java`, `schema.sql`, `data.sql`, `recipients.html`, `add-recipient.html`
+
+**Test it:** Add a new recipient with an email address and verify it appears in the recipients list.
+
+### 3. Implement Transfer Creation with Balance Updates
+Complete the money transfer functionality so that when a transfer is created, the sender's balance is deducted appropriately.
+
+**What you need to do:**
+- **3.a.** Verify the basic transfer creation works - create a transfer and confirm it appears in the transfers list on the home page
+- **3.b.** Deduct the source amount from the appropriate balance when a transfer is created:
+  - Look up the balance for the source currency using `BalanceRepository.findByCurrency()`
+  - Subtract the transfer's source amount from the balance
+  - Save the updated balance
+- **3.c.** Add validation to prevent transfers when the balance is insufficient:
+  - Before creating the transfer, check if the balance has enough funds
+  - If not, return an error response (e.g., HTTP 400 Bad Request with a message)
+
+**Files to modify:** `TransferController.java`
+
+**Test it:**
+1. Check your EUR balance on the home page
+2. Create a transfer from EUR to USD
+3. Verify the EUR balance decreased by the source amount
+4. Try to create a transfer larger than your remaining balance - it should fail
 
 ### 4. Refactoring exchange rate business logic
 ``TransferController`` and ``RateController`` currently contain business logic related to exchange rate calculations. 
