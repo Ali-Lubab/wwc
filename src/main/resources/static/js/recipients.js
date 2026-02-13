@@ -8,6 +8,7 @@ async function loadRecipients() {
         tbody.innerHTML += `<tr>
             <td>${r.id}</td>
             <td>${r.firstName} ${r.lastName}</td>
+            <td>${r.email || ''}</td>
             <td>${r.currency}</td>
             <td>${r.accountNumber}</td>
         </tr>`;

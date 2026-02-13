@@ -125,14 +125,12 @@ Replace the text input fields for currencies with drop-down menus that only show
 
 **5.c. Update the HTML to use drop-downs**
 - In `exchange-rate-calculator.html`, replace the text inputs with `<select>` elements
-- Create a new JavaScript file `js/calculator.js` to:
+- Modify the JavaScript file `js/calculator.js` to:
   - On page load, fetch `/rates/sources` and populate the source currency drop-down
   - When source currency changes, fetch `/rates/targets?source=XXX` and populate the target currency drop-down
 - Make sure the form submission still works with the new select elements
 
-**Files to modify:** `RateController.java`, `exchange-rate-calculator.html`
-
-**Files to create:** `js/calculator.js`
+**Files to modify:** `RateController.java`, `exchange-rate-calculator.html`, `js/calculator.js`
 
 **Test it:**
 1. Open the exchange rate calculator page

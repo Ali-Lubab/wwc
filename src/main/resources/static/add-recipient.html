@@ -19,6 +19,7 @@
 <form id="addRecipientForm">
     <input placeholder="First name" id="firstName" required><br>
     <input placeholder="Last name" id="lastName" required><br>
+    <input type="email" placeholder="Email" id="email" required><br>
     <input placeholder="Currency" id="currency" required><br>
     <input placeholder="Account number" id="accountNumber" required><br><br>
 
@@ -35,6 +36,7 @@
         await apiRequest("/recipients", "POST", {
             firstName: document.getElementById("firstName").value,
             lastName: document.getElementById("lastName").value,
+            email: document.getElementById("email").value,
             currency: document.getElementById("currency").value,
             accountNumber: document.getElementById("accountNumber").value
         });

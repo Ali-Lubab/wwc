@@ -25,21 +25,29 @@
     <button>Send</button>
 </form>
 
+<div id="error"></div>
+
 <script src="js/nav.js"></script>
 <script type="module">
     import { apiRequest } from "./js/api.js";
 
     document.getElementById("transferForm").addEventListener("submit", async (e) => {
         e.preventDefault();
+        const errorDiv = document.getElementById("error");
+        errorDiv.innerHTML = "";
 
-        await apiRequest("/transfers", "POST", {
+        const response = await apiRequest("/transfers", "POST", {
             recipientId: document.getElementById("recipientId").value,
             sourceAmount: document.getElementById("sourceAmount").value,
             sourceCurrency: document.getElementById("sourceCurrency").value,
             targetCurrency: document.getElementById("targetCurrency").value
-        });
+        }, false);
 
-        window.location.href = "home.html";
+        if (response.error) {
+            errorDiv.innerHTML = `<div class="list-item" style="color: red;">${response.error}</div>`;
+        } else {
+            window.location.href = "home.html";
+        }
     });
 </script>
 </body>
