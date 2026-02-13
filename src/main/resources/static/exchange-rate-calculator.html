@@ -16,8 +16,8 @@
 <h2>Exchange Rate Calculator</h2>
 
 <form id="calculatorForm">
-    <label for="sourceCurrency">Exchange from:</label><select id="sourceCurrency" required></select>
-    <label for="targetCurrency">Exchange to:</label><select id="targetCurrency" required></select>
+    <input type="text" id="sourceCurrency" placeholder="Source currency (e.g. EUR)" required><br>
+    <input type="text" id="targetCurrency" placeholder="Target currency (e.g. USD)" required><br>
     <input type="number" id="amount" placeholder="Amount" step="0.01" min="0.01" required><br><br>
 
     <button class="primary">Convert</button>
@@ -26,7 +26,6 @@
 <div id="result"></div>
 
 <script src="js/nav.js"></script>
-<script type="module" src="js/calculator.js"></script>
 <script type="module">
     import { apiRequest } from "./js/api.js";
 
