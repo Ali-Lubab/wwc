@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>New transfer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
@@ -9,23 +10,42 @@
 <nav>
     <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
     <div class="nav-links">
-        <a href="home.html">Home</a>
-        <a href="recipients.html">Recipients</a>
+        <a href="home.html">🏠 Home</a>
+        <a href="transfer.html">💸 New Transfer</a>
+        <a href="exchange-rate-calculator.html">🔢 Calculator</a>
+        <a href="recipients.html">👥 Recipients</a>
     </div>
 </nav>
 
-<h2>New transfer</h2>
+<div class="container">
+    <h1>New Transfer</h1>
 
-<form id="transferForm">
-    <input placeholder="Recipient ID" id="recipientId" required><br>
-    <input placeholder="Source amount" id="sourceAmount" required><br>
-    <input placeholder="Source currency" id="sourceCurrency" required><br>
-    <input placeholder="Target currency" id="targetCurrency" required><br><br>
+    <form id="transferForm">
+        <div class="form-group">
+            <label for="recipientId">Recipient ID</label>
+            <input type="text" id="recipientId" placeholder="Enter recipient ID" required>
+        </div>
 
-    <button>Send</button>
-</form>
+        <div class="form-group">
+            <label for="sourceAmount">Amount</label>
+            <input type="number" id="sourceAmount" placeholder="Enter amount" step="0.01" min="0.01" required>
+        </div>
 
-<div id="error"></div>
+        <div class="form-group">
+            <label for="sourceCurrency">From Currency</label>
+            <input type="text" id="sourceCurrency" placeholder="e.g., EUR" required>
+        </div>
+
+        <div class="form-group">
+            <label for="targetCurrency">To Currency</label>
+            <input type="text" id="targetCurrency" placeholder="e.g., USD" required>
+        </div>
+
+        <button type="submit" class="primary">Send Transfer</button>
+    </form>
+
+    <div id="error"></div>
+</div>
 
 <script src="js/nav.js"></script>
 <script type="module">
@@ -44,7 +64,7 @@
         }, false);
 
         if (response.error) {
-            errorDiv.innerHTML = `<div class="list-item" style="color: red;">${response.error}</div>`;
+            errorDiv.innerHTML = `<div class="error-message">${response.error}</div>`;
         } else {
             window.location.href = "home.html";
         }

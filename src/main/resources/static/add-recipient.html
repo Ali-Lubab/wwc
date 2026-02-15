@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>Add recipient</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
@@ -9,22 +10,45 @@
 <nav>
     <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
     <div class="nav-links">
-        <a href="home.html">Home</a>
-        <a href="recipients.html">Recipients</a>
+        <a href="home.html">🏠 Home</a>
+        <a href="transfer.html">💸 New Transfer</a>
+        <a href="exchange-rate-calculator.html">🔢 Calculator</a>
+        <a href="recipients.html">👥 Recipients</a>
     </div>
 </nav>
 
-<h2>Add recipient</h2>
+<div class="container">
+    <h1>Add Recipient</h1>
 
-<form id="addRecipientForm">
-    <input placeholder="First name" id="firstName" required><br>
-    <input placeholder="Last name" id="lastName" required><br>
-    <input type="email" placeholder="Email" id="email" required><br>
-    <input placeholder="Currency" id="currency" required><br>
-    <input placeholder="Account number" id="accountNumber" required><br><br>
+    <form id="addRecipientForm">
+        <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" placeholder="Enter first name" required>
+        </div>
 
-    <button>Add</button>
-</form>
+        <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" placeholder="Enter last name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="Enter email address" required>
+        </div>
+
+        <div class="form-group">
+            <label for="currency">Currency</label>
+            <input type="text" id="currency" placeholder="e.g., USD" required>
+        </div>
+
+        <div class="form-group">
+            <label for="accountNumber">Account Number</label>
+            <input type="text" id="accountNumber" placeholder="Enter account number" required>
+        </div>
+
+        <button type="submit" class="primary">Add Recipient</button>
+    </form>
+</div>
 
 <script src="js/nav.js"></script>
 <script type="module">

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>Home</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
@@ -9,18 +10,34 @@
 <nav>
     <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
     <div class="nav-links">
-        <a href="home.html">Home</a>
-        <a href="transfer.html">New transfer</a>
-        <a href="exchange-rate-calculator.html">Exchange rate calculator</a>
-        <a href="recipients.html">Recipients</a>
+        <a href="home.html">🏠 Home</a>
+        <a href="transfer.html">💸 New Transfer</a>
+        <a href="exchange-rate-calculator.html">🔢 Calculator</a>
+        <a href="recipients.html">👥 Recipients</a>
     </div>
 </nav>
 
-<h3>Balances</h3>
-<div id="balances"></div>
+<div class="container">
+    <h1>Dashboard</h1>
 
-<h3>Transfers</h3>
-<div id="transfers"></div>
+    <section>
+        <h3>Your Balances</h3>
+        <div id="balances">
+            <div class="loading-container">
+                <div class="spinner spinner-large"></div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h3>Recent Transfers</h3>
+        <div id="transfers">
+            <div class="loading-container">
+                <div class="spinner spinner-large"></div>
+            </div>
+        </div>
+    </section>
+</div>
 
 <script src="js/nav.js"></script>
 <script type="module" src="js/home.js"></script>
