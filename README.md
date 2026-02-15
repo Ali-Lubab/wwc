@@ -54,12 +54,12 @@ Complete the money transfer functionality so that when a transfer is created, th
 3. Verify the EUR balance decreased by the source amount
 4. Try to create a transfer larger than your remaining balance - it should fail
 
-### 4. Refactor Exchange Rate Logic into a Service
-Extract the exchange rate business logic from controllers into a dedicated service class. This follows the single responsibility principle and makes the code more maintainable and testable.
+### 4. Refactor Transfer Creation Logic into a Service
+Extract the transfer creation business logic from controllers into a dedicated service class. This follows the single responsibility principle and makes the code more maintainable and testable.
 
 **Why this matters:** Controllers should only handle HTTP requests/responses. Business logic (like currency conversion calculations) belongs in service classes. This separation makes code easier to test and reuse.
 
-**Test it:** Verify that the exchange rate calculator and transfer creation still work exactly as before.
+**Test it:** Verify that the transfer creation still work exactly as before.
 
 ### 5. Implement Currency Drop-downs for Exchange Rate Calculator
 Replace the text input fields for currencies with drop-down menus that only show valid currency pairs. This improves user experience by preventing invalid currency selections.

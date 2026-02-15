@@ -4,7 +4,6 @@ If you get stuck with the tasks, use this file to get some help on how to implem
 This is a money transfer application. The aim is to be able to create a recipient, check currency exchange rates and create a transfer.
 
 ### 1. Implement Exchange Rate Calculator
-Build a currency conversion feature that allows users to calculate how much money they will receive when exchanging between currencies.
 
 **What you need to do:**
 - Create a new endpoint in `RateController` (e.g., `GET /rates/convert`) that accepts source currency, target currency, and amount as parameters
@@ -15,10 +14,7 @@ Build a currency conversion feature that allows users to calculate how much mone
 
 **Files to modify:** `RateController.java`
 
-**Test it:** Open `exchange-rate-calculator.html` in the browser and try converting 100 EUR to USD.
-
 ### 2. Add Email Field to Recipient
-Extend the Recipient entity to store email addresses, allowing users to associate contact information with their recipients.
 
 **What you need to do:**
 - Add a new `email` field (type `String`) to the `Recipient` entity class
@@ -30,10 +26,7 @@ Extend the Recipient entity to store email addresses, allowing users to associat
 
 **Files to modify:** `Recipient.java`, `RecipientRepository.java`, `schema.sql`, `data.sql`, `recipients.html`, `add-recipient.html`
 
-**Test it:** Add a new recipient with an email address and verify it appears in the recipients list.
-
 ### 3. Implement Transfer Creation with Balance Updates
-Complete the money transfer functionality so that when a transfer is created, the sender's balance is deducted appropriately.
 
 **What you need to do:**
 - **3.a.** Verify the basic transfer creation works - create a transfer and confirm it appears in the transfers list on the home page
@@ -47,33 +40,21 @@ Complete the money transfer functionality so that when a transfer is created, th
 
 **Files to modify:** `TransferController.java`
 
-**Test it:**
-1. Check your EUR balance on the home page
-2. Create a transfer from EUR to USD
-3. Verify the EUR balance decreased by the source amount
-4. Try to create a transfer larger than your remaining balance - it should fail
-
-### 4. Refactor Exchange Rate Logic into a Service
-Extract the exchange rate business logic from controllers into a dedicated service class. This follows the single responsibility principle and makes the code more maintainable and testable.
-
-**Why this matters:** Controllers should only handle HTTP requests/responses. Business logic (like currency conversion calculations) belongs in service classes. This separation makes code easier to test and reuse.
+### 4. Refactor Transfer Creation Logic into a Service
 
 **What you need to do:**
-- Create a new class `ExchangeRateService.java` in the `rate` package
+- Create a new class `TransferService.java` in the `transfer` package
 - Add the `@Service` annotation to make it a Spring-managed bean
-- Move the conversion logic from `RateController` into a method like `convert(String source, String target, BigDecimal amount)`
-- Move the rate lookup and calculation logic from `TransferController` into a method like `calculateTargetAmount(String source, String target, BigDecimal amount)`
-- Inject `RateRepository` into the service
-- Update `RateController` and `TransferController` to inject and use `ExchangeRateService` instead of containing the logic directly
+- Move the transfer creation logic from `TransferConroller` into a method like `create(Transfer transfer)`
+- Split that method into smaller parts
+- Inject `RateRepository`, `BalanceRepository` and `TransferRepository` into the service
+- Update `TransferController` to inject and use `TransferController` instead of containing the logic directly
 
-**Files to create:** `ExchangeRateService.java`
+**Files to create:** `TransferService.java`
 
-**Files to modify:** `RateController.java`, `TransferController.java`
-
-**Test it:** Verify that the exchange rate calculator and transfer creation still work exactly as before.
+**Files to modify:**  `TransferController.java`
 
 ### 5. Implement Currency Drop-downs for Exchange Rate Calculator
-Replace the text input fields for currencies with drop-down menus that only show valid currency pairs. This improves user experience by preventing invalid currency selections.
 
 **What you need to do:**
 
@@ -95,9 +76,3 @@ Replace the text input fields for currencies with drop-down menus that only show
 - Make sure the form submission still works with the new select elements
 
 **Files to modify:** `RateController.java`, `exchange-rate-calculator.html`, `js/calculator.js`
-
-**Test it:**
-1. Open the exchange rate calculator page
-2. The source currency drop-down should show all available currencies
-3. Select a source currency - the target drop-down should update to show only valid pairs
-4. Perform a conversion and verify it still works
