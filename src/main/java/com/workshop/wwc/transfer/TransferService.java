@@ -19,10 +19,20 @@ public class TransferService {
     private final TransferRepository transferRepository;
 
     public Transfer create(Transfer transfer) {
+        updateTargetAmount(transfer);
+        var currentBalances = getCurrentBalances(transfer);
+        updateCurrentBalances(transfer, currentBalances);
+        return transferRepository.save(transfer);
+    }
+
+    private void updateTargetAmount(Transfer transfer) {
         var exchangeRate =
                 rateRepository.findBySourceCurrencyAndTargetCurrency(transfer.getSourceCurrency(), transfer.getTargetCurrency());
         var targetAmount = transfer.getSourceAmount().multiply(exchangeRate.get().getRate());
         transfer.setTargetAmount(targetAmount);
+    }
+
+    private Result getCurrentBalances(Transfer transfer) {
         Optional<Balance> sourceBalance = balanceRepository.findByCurrency(transfer.getSourceCurrency());
         Optional<Balance> targetBalance = balanceRepository.findByCurrency(transfer.getTargetCurrency());
         if (sourceBalance.isEmpty() || targetBalance.isEmpty()) {
@@ -31,10 +41,16 @@ public class TransferService {
         if (sourceBalance.get().getAmount().compareTo(transfer.getSourceAmount()) < 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Insufficient funds in source balance");
         }
-        sourceBalance.get().setAmount(sourceBalance.get().getAmount().add(transfer.getSourceAmount()));
-        targetBalance.get().setAmount(targetBalance.get().getAmount().subtract(transfer.getTargetAmount()));
-        balanceRepository.save(sourceBalance.get());
-        balanceRepository.save(targetBalance.get());
-        return transferRepository.save(transfer);
+        return new Result(sourceBalance.get(), targetBalance.get());
+    }
+
+    private void updateCurrentBalances(Transfer transfer, Result currentBalances) {
+        currentBalances.sourceBalance().setAmount(currentBalances.sourceBalance().getAmount().add(transfer.getSourceAmount()));
+        currentBalances.targetBalance().setAmount(currentBalances.targetBalance().getAmount().subtract(transfer.getTargetAmount()));
+        balanceRepository.save(currentBalances.sourceBalance());
+        balanceRepository.save(currentBalances.targetBalance());
+    }
+
+    private record Result(Balance sourceBalance, Balance targetBalance) {
     }
 }
