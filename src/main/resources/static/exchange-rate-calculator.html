@@ -16,8 +16,8 @@
 <h2>Exchange Rate Calculator</h2>
 
 <form id="calculatorForm">
-    <input type="text" id="sourceCurrency" placeholder="Source currency (e.g. EUR)" required><br>
-    <input type="text" id="targetCurrency" placeholder="Target currency (e.g. USD)" required><br>
+    <select type="text" id="sourceCurrency" placeholder="Source currency (e.g. EUR)" required></select><br>
+    <select type="text" id="targetCurrency" placeholder="Target currency (e.g. USD)" required></select><br>
     <input type="number" id="amount" placeholder="Amount" step="0.01" min="0.01" required><br><br>
 
     <button class="primary">Convert</button>
@@ -26,31 +26,6 @@
 <div id="result"></div>
 
 <script src="js/nav.js"></script>
-<script type="module">
-    import { apiRequest } from "./js/api.js";
-
-    document.getElementById("calculatorForm").addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        const source = document.getElementById("sourceCurrency").value.toUpperCase();
-        const target = document.getElementById("targetCurrency").value.toUpperCase();
-        const amount = document.getElementById("amount").value;
-        const resultDiv = document.getElementById("result");
-
-        const data = await apiRequest(
-            `/rates/convert?source=${source}&target=${target}&amount=${amount}`,
-            "GET", null, false
-        );
-
-        if (data.error) {
-            resultDiv.innerHTML = `<div class="list-item" style="color: red;">${data.error}</div>`;
-        } else {
-            resultDiv.innerHTML = `<div class="list-item">
-                <strong>${data.amount} ${data.source}</strong> = <strong>${data.result} ${data.target}</strong>
-                <br>Rate: ${data.rate}
-            </div>`;
-        }
-    });
-</script>
+<script type="module" src="js/calculator.js"></script>
 </body>
 </html>

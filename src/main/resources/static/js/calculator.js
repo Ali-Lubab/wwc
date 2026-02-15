@@ -1,5 +1,14 @@
 import { apiRequest } from "./api.js";
 
+// Ensure DOM is loaded before running any code
+document.addEventListener("DOMContentLoaded", () => {
+    loadAvailableCurrencies();
+
+    document.getElementById("sourceCurrency").addEventListener("change", async (event) => {
+        loadTargetCurrencies(event.target.value);
+    });
+});
+
 async function loadAvailableCurrencies() {
     const currencies = await apiRequest("/rates/currencies")
     const container = document.getElementById("sourceCurrency")
@@ -25,9 +34,3 @@ async function loadTargetCurrencies(sourceCurrency) {
         container.appendChild(option);
     });
 }
-
-loadAvailableCurrencies();
-
-document.getElementById("sourceCurrency").addEventListener("change", async (e) => {
-    loadTargetCurrencies(event.target.value);
-});
