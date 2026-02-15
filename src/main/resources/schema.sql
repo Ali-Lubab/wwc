@@ -32,3 +32,5 @@ CREATE TABLE IF NOT EXISTS transfer (
     updated_at      TIMESTAMP      NOT NULL,
     FOREIGN KEY (recipient_id) REFERENCES recipient(id)
 );
+
+ALTER TABLE recipient ADD COLUMN IF NOT EXISTS email VARCHAR(255)

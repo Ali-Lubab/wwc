@@ -1,5 +1,7 @@
 package com.workshop.wwc.transfer;
 
+import com.workshop.wwc.balance.Balance;
+import com.workshop.wwc.balance.BalanceRepository;
 import com.workshop.wwc.rate.RateRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/transfers")
@@ -19,15 +22,11 @@ import java.util.List;
 public class TransferController {
 
     private final TransferRepository transferRepository;
-    private final RateRepository rateRepository;
+    private final TransferService transferService;
 
     @PostMapping
     public Transfer create(@RequestBody Transfer transfer) {
-        var exchangeRate =
-                rateRepository.findBySourceCurrencyAndTargetCurrency(transfer.getSourceCurrency(), transfer.getTargetCurrency());
-        var targetAmount = transfer.getSourceAmount().multiply(exchangeRate.get().getRate());
-        transfer.setTargetAmount(targetAmount);
-        return transferRepository.save(transfer);
+        return transferService.create(transfer);
     }
 
     @GetMapping("/{id}")
