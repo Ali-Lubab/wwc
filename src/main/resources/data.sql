@@ -59,25 +59,25 @@ INSERT INTO rate (source_currency, target_currency, rate)
 SELECT 'HUF', 'USD', 0.00277500
     WHERE NOT EXISTS (SELECT 1 FROM rate WHERE source_currency = 'HUF' AND target_currency = 'USD');
 
-INSERT INTO recipient (first_name, last_name, currency, account_number, is_active)
-SELECT 'John', 'Doe', 'EUR', 'DE111', TRUE
-    WHERE NOT EXISTS (SELECT 1 FROM recipient WHERE first_name = 'John' AND last_name = 'Doe' AND currency = 'EUR' AND account_number = 'DE111');
+INSERT INTO recipient (first_name, last_name, account_number, is_active)
+SELECT 'John', 'Doe', 'DE111', TRUE
+    WHERE NOT EXISTS (SELECT 1 FROM recipient WHERE first_name = 'John' AND last_name = 'Doe' AND account_number = 'DE111');
 
-INSERT INTO recipient (first_name, last_name, currency, account_number, is_active)
-SELECT 'Jane', 'Doe', 'USD', 'US222', TRUE
-    WHERE NOT EXISTS (SELECT 1 FROM recipient WHERE first_name = 'Jane' AND last_name = 'Doe' AND currency = 'USD' AND account_number = 'US222');
+INSERT INTO recipient (first_name, last_name, account_number, is_active)
+SELECT 'Jane', 'Doe', 'US222', TRUE
+    WHERE NOT EXISTS (SELECT 1 FROM recipient WHERE first_name = 'Jane' AND last_name = 'Doe' AND account_number = 'US222');
 
-INSERT INTO recipient (first_name, last_name, currency, account_number, is_active)
-SELECT 'Michael', 'Scott', 'USD', 'US333', TRUE
-    WHERE NOT EXISTS (SELECT 1 FROM recipient WHERE first_name = 'Michael' AND last_name = 'Scott' AND currency = 'USD' AND account_number = 'US333');
+INSERT INTO recipient (first_name, last_name, account_number, is_active)
+SELECT 'Michael', 'Scott', 'US333', TRUE
+    WHERE NOT EXISTS (SELECT 1 FROM recipient WHERE first_name = 'Michael' AND last_name = 'Scott' AND account_number = 'US333');
 
-INSERT INTO recipient (first_name, last_name, currency, account_number, is_active)
-SELECT 'Pam', 'Beesly', 'EUR', 'DE444', TRUE
-    WHERE NOT EXISTS (SELECT 1 FROM recipient WHERE first_name = 'Pam' AND last_name = 'Beesly' AND currency = 'EUR' AND account_number = 'DE444');
+INSERT INTO recipient (first_name, last_name, account_number, is_active)
+SELECT 'Pam', 'Beesly', 'DE444', TRUE
+    WHERE NOT EXISTS (SELECT 1 FROM recipient WHERE first_name = 'Pam' AND last_name = 'Beesly' AND account_number = 'DE444');
 
-INSERT INTO recipient (first_name, last_name, currency, account_number, is_active)
-SELECT 'Jim', 'Halpert', 'GBP', 'GB555', TRUE
-    WHERE NOT EXISTS (SELECT 1 FROM recipient WHERE first_name = 'Jim' AND last_name = 'Halpert' AND currency = 'GBP' AND account_number = 'GB555');
+INSERT INTO recipient (first_name, last_name, account_number, is_active)
+SELECT 'Jim', 'Halpert', 'GB555', TRUE
+    WHERE NOT EXISTS (SELECT 1 FROM recipient WHERE first_name = 'Jim' AND last_name = 'Halpert' AND account_number = 'GB555');
 
 INSERT INTO transfer (recipient_id, source_amount, source_currency, target_amount, target_currency, created_at, updated_at)
 SELECT (SELECT id FROM recipient WHERE account_number = 'DE111'), 100.00, 'EUR', 108.54, 'USD', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
