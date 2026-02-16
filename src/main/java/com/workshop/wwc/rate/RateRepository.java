@@ -74,19 +74,4 @@ public class RateRepository {
         }
         return rate;
     }
-
-    public List<String> getAllAvailableCurrencies() {
-        return jdbcTemplate.queryForList(
-                "SELECT DISTINCT source_currency FROM rate",
-                String.class
-        );
-    }
-
-    public List<String> getAllTargetCurrenciesFor(String sourceCurrency) {
-        return jdbcTemplate.queryForList(
-                "SELECT target_currency FROM rate where source_currency = ?",
-                String.class,
-                sourceCurrency
-        );
-    }
 }
