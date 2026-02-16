@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>Recipients</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
@@ -9,25 +10,35 @@
 <nav>
     <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
     <div class="nav-links">
-        <a href="home.html">Home</a>
-        <a href="add-recipient.html">Add recipient</a>
+        <a href="home.html">🏠 Home</a>
+        <a href="transfer.html">💸 New Transfer</a>
+        <a href="exchange-rate-calculator.html">🔢 Calculator</a>
+        <a href="recipients.html">👥 Recipients</a>
     </div>
 </nav>
 
-<h2>Recipients</h2>
-<div class="table-container">
-    <table id="recipients">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Currency</th>
-                <th>Account number</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
+<div class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
+        <h1>Recipients</h1>
+        <a href="add-recipient.html" style="text-decoration: none;">
+            <button class="secondary" style="width: auto;">+ Add New Recipient</button>
+        </a>
+    </div>
+
+    <div class="table-container">
+        <table id="recipients">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Currency</th>
+                    <th>Account number</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
 </div>
 
 <script src="js/nav.js"></script>
