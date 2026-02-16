@@ -1,10 +1,23 @@
-MERGE INTO balance
-(id, currency, amount)
-VALUES
-(1, 'EUR', 1200.00),
-(2, 'USD', 500.00),
-(3, 'GBP', 300.00),
-(4, 'HUF', 150000.00);
+-- Row 1: EUR
+INSERT INTO balance (id, currency, amount)
+SELECT 1, 'EUR', 1200.00
+    WHERE NOT EXISTS (SELECT 1 FROM balance WHERE id = 1);
+
+-- Row 2: USD
+INSERT INTO balance (id, currency, amount)
+SELECT 2, 'USD', 500.00
+    WHERE NOT EXISTS (SELECT 1 FROM balance WHERE id = 2);
+
+-- Row 3: GBP
+INSERT INTO balance (id, currency, amount)
+SELECT 3, 'GBP', 300.00
+    WHERE NOT EXISTS (SELECT 1 FROM balance WHERE id = 3);
+
+-- Row 4: HUF
+INSERT INTO balance (id, currency, amount)
+SELECT 4, 'HUF', 150000.00
+    WHERE NOT EXISTS (SELECT 1 FROM balance WHERE id = 4);
+
 
 MERGE INTO recipient
 (id, first_name, last_name, currency, account_number, is_active)
