@@ -46,16 +46,30 @@ public class RateController {
             @RequestParam String source,
             @RequestParam String target,
             @RequestParam BigDecimal amount) {
-        return Map.of("error", "Not implemented yet");
+        Optional<Rate> rateOpt = rateRepository.findBySourceCurrencyAndTargetCurrency(source, target);
+        if (rateOpt.isEmpty()) {
+            return Map.of("error", "Exchange rate not found for " + source + " to " + target);
+        }
+        BigDecimal result = amount.multiply(rateOpt.get().getRate()).setScale(2, RoundingMode.HALF_UP);
+        return Map.of(
+                "source", source,
+                "target", target,
+                "amount", amount,
+                "rate", rateOpt.get().getRate(),
+                "result", result
+        );
     }
 
     @GetMapping("/currencies")
     public List<String> getAvailableCurrencies() {
-        return List.of();
+        return rateRepository.getAllAvailableCurrencies();
     }
 
     @GetMapping("/targetCurrencies/{ccy}")
     public List<String> getAvailableTargetCurrencies(@PathVariable String ccy) {
-        return List.of();
+        if (!rateRepository.getAllAvailableCurrencies().contains(ccy)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid source currency");
+        }
+        return rateRepository.getAllTargetCurrenciesFor(ccy);
     }
 }

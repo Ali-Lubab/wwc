@@ -22,6 +22,7 @@ public class RecipientRepository {
     private final RowMapper<Recipient> rowMapper = (rs, rowNum) -> {
         Recipient r = new Recipient();
         r.setId(rs.getLong("id"));
+        r.setEmail(rs.getString("email"));
         r.setFirstName(rs.getString("first_name"));
         r.setLastName(rs.getString("last_name"));
         r.setCurrency(rs.getString("currency"));
@@ -47,15 +48,16 @@ public class RecipientRepository {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update(connection -> {
                 PreparedStatement ps = connection.prepareStatement(
-                        "INSERT INTO recipient (first_name, last_name, currency, account_number, is_active) "
-                                + "VALUES (?, ?, ?, ?, ?)",
+                        "INSERT INTO recipient (email, first_name, last_name, currency, account_number, is_active) "
+                                + "VALUES (?, ?, ?, ?, ?, ?)",
                         Statement.RETURN_GENERATED_KEYS
                 );
-                ps.setString(1, recipient.getFirstName());
-                ps.setString(2, recipient.getLastName());
-                ps.setString(3, recipient.getCurrency());
-                ps.setString(4, recipient.getAccountNumber());
-                ps.setBoolean(5, recipient.isActive());
+                ps.setString(1, recipient.getEmail());
+                ps.setString(2, recipient.getFirstName());
+                ps.setString(3, recipient.getLastName());
+                ps.setString(4, recipient.getCurrency());
+                ps.setString(5, recipient.getAccountNumber());
+                ps.setBoolean(6, recipient.isActive());
                 return ps;
             }, keyHolder);
 
@@ -63,8 +65,9 @@ public class RecipientRepository {
         } else {
             // UPDATE
             jdbcTemplate.update(
-                    "UPDATE recipient SET first_name = ?, last_name = ?, currency = ?, "
+                    "UPDATE recipient SET email = ?, first_name = ?, last_name = ?, currency = ?, "
                             + "account_number = ?, is_active = ? WHERE id = ?",
+                    recipient.getEmail(),
                     recipient.getFirstName(), recipient.getLastName(),
                     recipient.getCurrency(), recipient.getAccountNumber(),
                     recipient.isActive(),

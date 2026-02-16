@@ -22,6 +22,12 @@ import java.util.Optional;
 public class TransferController {
 
     private final TransferRepository transferRepository;
+    private final TransferService transferService;
+
+    @PostMapping
+    public Transfer create(@RequestBody Transfer transfer) {
+        return transferService.create(transfer);
+    }
 
     @GetMapping("/{id}")
     public Transfer getById(@PathVariable Long id) {

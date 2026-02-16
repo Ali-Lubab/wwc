@@ -23,12 +23,16 @@
     <form id="calculatorForm">
         <div class="form-group">
             <label for="sourceCurrency">From Currency</label>
-            <input id="sourceCurrency" required>
+            <select id="sourceCurrency" required>
+                <option value="">Loading currencies...</option>
+            </select>
         </div>
 
         <div class="form-group">
             <label for="targetCurrency">To Currency</label>
-            <input id="targetCurrency" required>
+            <select id="targetCurrency" required>
+                <option value="">Select source currency first</option>
+            </select>
         </div>
 
         <div class="form-group">
