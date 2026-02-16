@@ -14,8 +14,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/rates")
@@ -42,22 +40,15 @@ public class RateController {
     }
 
     @GetMapping("/convert")
-    public Map<String, Object> convert(
+    public RateDto convert(
             @RequestParam String source,
             @RequestParam String target,
             @RequestParam BigDecimal amount) {
-        Optional<Rate> rateOpt = rateRepository.findBySourceCurrencyAndTargetCurrency(source, target);
-        if (rateOpt.isEmpty()) {
-            return Map.of("error", "Exchange rate not found for " + source + " to " + target);
-        }
-        BigDecimal result = amount.multiply(rateOpt.get().getRate()).setScale(2, RoundingMode.HALF_UP);
-        return Map.of(
-                "source", source,
-                "target", target,
-                "amount", amount,
-                "rate", rateOpt.get().getRate(),
-                "result", result
-        );
+        Rate rate = rateRepository.findBySourceCurrencyAndTargetCurrency(source, target)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Exchange rate not found for " + source + " to " + target));
+        BigDecimal result = amount.multiply(rate.getRate()).setScale(2, RoundingMode.HALF_UP);
+        return new RateDto(source, target, amount, rate.getRate(), result);
     }
 
     @GetMapping("/currencies")
