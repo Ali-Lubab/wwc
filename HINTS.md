@@ -6,7 +6,7 @@ This is a money transfer application. The aim is to be able to create a recipien
 ### 1. Implement Exchange Rate Calculator
 
 **What you need to do:**
-- Create a new endpoint in `RateController` (e.g., `GET /rates/convert`) that accepts source currency, target currency, and amount as parameters
+- Edit the `GET /rates/convert` endpoint in `RateController`
 - Look up the exchange rate from `RateRepository` using `findBySourceCurrencyAndTargetCurrency()`
 - Calculate the converted amount by multiplying the input amount by the rate
 - Return the result (original amount, converted amount, rate used, and currencies)
@@ -19,12 +19,9 @@ This is a money transfer application. The aim is to be able to create a recipien
 **What you need to do:**
 - Add a new `email` field (type `String`) to the `Recipient` entity class
 - Update `schema.sql` to add an `email` column to the recipient table
-- Update `data.sql` to include sample email values for existing recipients
 - Update `RecipientRepository` to include the email field in the row mapper, INSERT, and UPDATE statements
-- Update `recipients.html` to display the email column in the table
-- Update `add-recipient.html` to include an email input field in the form
 
-**Files to modify:** `Recipient.java`, `RecipientRepository.java`, `schema.sql`, `data.sql`, `recipients.html`, `add-recipient.html`
+**Files to modify:** `Recipient.java`, `RecipientRepository.java`, `schema.sql`
 
 ### 3. Implement Transfer Creation with Balance Updates
 
@@ -75,4 +72,4 @@ This is a money transfer application. The aim is to be able to create a recipien
     - When source currency changes, fetch `/rates/targets?source=XXX` and populate the target currency drop-down
 - Make sure the form submission still works with the new select elements
 
-**Files to modify:** `RateController.java`, `exchange-rate-calculator.html`, `js/calculator.js`
+**Files to modify:** `RateController.java`, `exchange-rate-calculator.html`

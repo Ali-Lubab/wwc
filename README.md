@@ -4,6 +4,7 @@
 - Java
 - Intellij - hopefully you're already in there :)
 - Install Lombok plugin in Intellij and enable annotation processing in settings
+- You can use AI tools, but don't use Agentic AIs that can write code for you without your input
 
 ## Basic commands
 - `./gradlew bootRun` starts spring boot application.
@@ -11,6 +12,16 @@
 - `./grardlew build` builds the project.
 - `--info` at the end of gradle commands shows more detailed logs.
 - `ctrl` + `c` in the terminal exits running command.
+
+Alternatively, if you want to run the application from Intellij, you can open `WwcApplication.java` and click the green play button next to the `main` method.
+![run-application.png](docs/images/run-application.png)
+
+If you change something on the backend code, you need to stop the application and start it again for the changes to take effect.
+
+## UI
+- You need to start the backend application first
+- Once the application is running, you can access the UI by opening http://localhost:8080 in your web browser.
+- On the UI, you can navigate to the different screens
 
 ## Useful Intellij shortcuts
 - Press `option` and `F12` at the same time to open the terminal. 
@@ -32,13 +43,19 @@
 ## DB design
 ![db_design.png](docs/images/db_design.png)
 
+## Domains
+- **Recipient**: Represents a recipient of money transfers. Contains fields like `id`, `name`, `currency`, and `email`.
+- **Rate**: Represents an exchange rate between two currencies. Contains fields like `id`, `sourceCurrency`, `targetCurrency`, and `rate`. We treat these as fix for our use case.
+- **Transfer**: Represents a money transfer between a sender and a recipient. Contains fields like `id`, `recipientId`, `sourceCurrency`, `targetCurrency`, `sourceAmount`, `targetAmount`, and `timestamp`.
+- **Balance**: Represents the user's balance for a specific currency. Contains fields like `id`, `currency`, and `amount`.
+
 ## Tasks
 This is a money transfer application. The aim is to be able to create a recipient, check currency exchange rates and create a transfer. 
 
 ### 1. Implement Exchange Rate Calculator
 Build a currency conversion feature that allows users to calculate how much money they will receive when exchanging between currencies.
 
-**Test it:** Open `exchange-rate-calculator.html` in the browser and try converting 100 EUR to USD.
+**Test it:** Open http://localhost:8080/exchange-rate-calculator.html in the browser and try converting 100 EUR to USD.
 
 ### 2. Add Email Field to Recipient
 Extend the Recipient entity to store email addresses, allowing users to associate contact information with their recipients.
@@ -77,3 +94,10 @@ Replace the text input fields for currencies with drop-down menus that only show
 2. The source currency drop-down should show all available currencies
 3. Select a source currency - the target drop-down should update to show only valid pairs
 4. Perform a conversion and verify it still works
+
+### Extra exercises
+If you would still have some time after finishing these tasks, there are a couple things our application could use:
+- tests for the application code
+- some pages do not have proper validation and error handling - you could add that and display error messages on the UI, e.g. 
+  - transfer could also have currency drop down
+  - for transfer creation, recipient could also be loaded form a list
