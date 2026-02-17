@@ -56,17 +56,16 @@
         const errorDiv = document.getElementById("error");
         errorDiv.innerHTML = "";
 
-        const response = await apiRequest("/transfers", "POST", {
-            recipientId: document.getElementById("recipientId").value,
-            sourceAmount: document.getElementById("sourceAmount").value,
-            sourceCurrency: document.getElementById("sourceCurrency").value,
-            targetCurrency: document.getElementById("targetCurrency").value
-        }, false);
-
-        if (response.error) {
-            errorDiv.innerHTML = `<div class="error-message">${response.error}</div>`;
-        } else {
+        try {
+            await apiRequest("/transfers", "POST", {
+                recipientId: document.getElementById("recipientId").value,
+                sourceAmount: document.getElementById("sourceAmount").value,
+                sourceCurrency: document.getElementById("sourceCurrency").value,
+                targetCurrency: document.getElementById("targetCurrency").value
+            });
             window.location.href = "home.html";
+        } catch (err) {
+            errorDiv.innerHTML = `<div class="error-message">${err.message}</div>`;
         }
     });
 </script>

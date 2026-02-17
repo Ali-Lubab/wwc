@@ -19,8 +19,6 @@ public class Recipient {
 
     private String lastName;
 
-    private String currency;
-
     private String accountNumber;
 
     @Builder.Default
