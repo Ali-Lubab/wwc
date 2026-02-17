@@ -8,7 +8,6 @@ CREATE TABLE IF NOT EXISTS recipient (
     id             BIGINT AUTO_INCREMENT PRIMARY KEY,
     first_name     VARCHAR(255) NOT NULL,
     last_name      VARCHAR(255) NOT NULL,
-    currency       VARCHAR(3)   NOT NULL,
     account_number VARCHAR(255) NOT NULL,
     is_active      BOOLEAN      NOT NULL DEFAULT TRUE
 );

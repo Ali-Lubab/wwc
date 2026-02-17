@@ -130,7 +130,7 @@ async function handleConversion() {
     } catch (error) {
         resultContainer.innerHTML = `
             <div class="error-message">
-                Failed to convert. Please check your inputs and try again.
+                ${error.message}
             </div>
         `;
     } finally {

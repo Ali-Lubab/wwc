@@ -13,8 +13,8 @@ export async function apiRequest(path, method = "GET", body) {
     const response = await fetch(API_BASE + path, options);
 
     if (!response.ok) {
-        const text = await response.text();
-        throw new Error(text || "Request failed");
+        const json = await response.json();
+        throw new Error(json.error || "Request failed");
     }
 
     return response.json();

@@ -42,11 +42,11 @@ public class RateController {
     }
 
     @GetMapping("/convert")
-    public Map<String, Object> convert(
+    public RateDto convert(
             @RequestParam String source,
             @RequestParam String target,
             @RequestParam BigDecimal amount) {
-        return Map.of("error", "Not implemented yet");
+        throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED);
     }
 
     @GetMapping("/currencies")
