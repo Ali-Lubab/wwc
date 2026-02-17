@@ -26,7 +26,6 @@ async function loadRecipients() {
                 <td>${r.id}</td>
                 <td style="font-weight: 500;">${r.firstName} ${r.lastName}</td>
                 <td>${r.email || '-'}</td>
-                <td><span class="badge">${r.currency}</span></td>
                 <td>${r.accountNumber}</td>
             `;
             tbody.appendChild(row);

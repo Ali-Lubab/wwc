@@ -6,11 +6,11 @@ This is a money transfer application. The aim is to be able to create a recipien
 ### 1. Implement Exchange Rate Calculator
 
 **What you need to do:**
-- Create a new endpoint in `RateController` (e.g., `GET /rates/convert`) that accepts source currency, target currency, and amount as parameters
+- Implement `GET /rates/convert` endpoint in `RateController` that accepts source currency, target currency, and amount as parameters
 - Look up the exchange rate from `RateRepository` using `findBySourceCurrencyAndTargetCurrency()`
 - Calculate the converted amount by multiplying the input amount by the rate
 - Return the result (original amount, converted amount, rate used, and currencies)
-- Handle the case where a currency pair doesn't exist (return an appropriate error message)
+- Handle the case where a currency pair doesn't exist (throw an appropriate error message)
 
 **Files to modify:** `RateController.java`
 

@@ -25,7 +25,6 @@ public class RecipientRepository {
         r.setEmail(rs.getString("email"));
         r.setFirstName(rs.getString("first_name"));
         r.setLastName(rs.getString("last_name"));
-        r.setCurrency(rs.getString("currency"));
         r.setAccountNumber(rs.getString("account_number"));
         r.setActive(rs.getBoolean("is_active"));
         return r;
@@ -48,16 +47,15 @@ public class RecipientRepository {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update(connection -> {
                 PreparedStatement ps = connection.prepareStatement(
-                        "INSERT INTO recipient (email, first_name, last_name, currency, account_number, is_active) "
-                                + "VALUES (?, ?, ?, ?, ?, ?)",
+                        "INSERT INTO recipient (email, first_name, last_name, account_number, is_active) "
+                                + "VALUES (?, ?, ?, ?, ?)",
                         Statement.RETURN_GENERATED_KEYS
                 );
                 ps.setString(1, recipient.getEmail());
                 ps.setString(2, recipient.getFirstName());
                 ps.setString(3, recipient.getLastName());
-                ps.setString(4, recipient.getCurrency());
-                ps.setString(5, recipient.getAccountNumber());
-                ps.setBoolean(6, recipient.isActive());
+                ps.setString(4, recipient.getAccountNumber());
+                ps.setBoolean(5, recipient.isActive());
                 return ps;
             }, keyHolder);
 
@@ -65,11 +63,11 @@ public class RecipientRepository {
         } else {
             // UPDATE
             jdbcTemplate.update(
-                    "UPDATE recipient SET email = ?, first_name = ?, last_name = ?, currency = ?, "
+                    "UPDATE recipient SET email = ?, first_name = ?, last_name = ?, "
                             + "account_number = ?, is_active = ? WHERE id = ?",
                     recipient.getEmail(),
                     recipient.getFirstName(), recipient.getLastName(),
-                    recipient.getCurrency(), recipient.getAccountNumber(),
+                    recipient.getAccountNumber(),
                     recipient.isActive(),
                     recipient.getId()
             );
