@@ -45,8 +45,8 @@ public class TransferService {
     }
 
     private void updateCurrentBalances(Transfer transfer, Result currentBalances) {
-        currentBalances.sourceBalance().setAmount(currentBalances.sourceBalance().getAmount().add(transfer.getSourceAmount()));
-        currentBalances.targetBalance().setAmount(currentBalances.targetBalance().getAmount().subtract(transfer.getTargetAmount()));
+        currentBalances.sourceBalance().setAmount(currentBalances.sourceBalance().getAmount().subtract(transfer.getSourceAmount()));
+        currentBalances.targetBalance().setAmount(currentBalances.targetBalance().getAmount().add(transfer.getTargetAmount()));
         balanceRepository.save(currentBalances.sourceBalance());
         balanceRepository.save(currentBalances.targetBalance());
     }
