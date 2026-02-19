@@ -59,7 +59,7 @@ async function loadAvailableCurrencies() {
             await loadTargetCurrencies(currencies[0]);
         }
     } catch (error) {
-        container.innerHTML = '<option value="">Error loading currencies</option>';
+        container.innerHTML = `<option value="">${error.message}</option>`;
     }
 }
 
@@ -82,7 +82,7 @@ async function loadTargetCurrencies(sourceCurrency) {
             container.value = currencies[0];
         }
     } catch (error) {
-        container.innerHTML = '<option value="">Error loading currencies</option>';
+        container.innerHTML = `<option value="">${error.message}</option>`;
     }
 }
 

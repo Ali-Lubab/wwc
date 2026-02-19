@@ -33,7 +33,7 @@ async function loadRecipients() {
     } catch (error) {
         tableContainer.innerHTML = `
             <div class="error-message">
-                Failed to load recipients. Please try again.
+                ${error.message}
             </div>
         `;
     }
