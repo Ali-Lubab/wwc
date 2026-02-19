@@ -43,6 +43,8 @@
 
         <button type="submit" class="primary">Add Recipient</button>
     </form>
+
+    <div id="error"></div>
 </div>
 
 <script src="js/nav.js"></script>
@@ -51,15 +53,21 @@
 
     document.getElementById("addRecipientForm").addEventListener("submit", async (e) => {
         e.preventDefault();
+        const errorDiv = document.getElementById("error");
+        errorDiv.innerHTML = "";
 
-        await apiRequest("/recipients", "POST", {
-            firstName: document.getElementById("firstName").value,
-            lastName: document.getElementById("lastName").value,
-            email: document.getElementById("email").value,
-            accountNumber: document.getElementById("accountNumber").value
-        });
+        try {
+            await apiRequest("/recipients", "POST", {
+                firstName: document.getElementById("firstName").value,
+                lastName: document.getElementById("lastName").value,
+                email: document.getElementById("email").value,
+                accountNumber: document.getElementById("accountNumber").value
+            });
 
-        window.location.href = "recipients.html";
+            window.location.href = "recipients.html";
+        } catch (err) {
+            errorDiv.innerHTML = `<div class="error-message">${err.message}</div>`;
+        }
     });
 </script>
 </body>

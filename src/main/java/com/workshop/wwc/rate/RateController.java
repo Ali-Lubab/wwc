@@ -46,7 +46,8 @@ public class RateController {
             @RequestParam String source,
             @RequestParam String target,
             @RequestParam BigDecimal amount) {
-        throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED);
+        throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED,
+                "Currency conversion is not yet implemented");
     }
 
     @GetMapping("/currencies")

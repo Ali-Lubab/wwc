@@ -59,7 +59,7 @@ async function loadBalances() {
     } catch (error) {
         container.innerHTML = `
             <div class="error-message">
-                Failed to load balances. Please try again.
+                ${error.message}
             </div>
         `;
     }
@@ -111,7 +111,7 @@ async function loadTransfers() {
     } catch (error) {
         container.innerHTML = `
             <div class="error-message">
-                Failed to load transfers. Please try again.
+                ${error.message}
             </div>
         `;
     }
