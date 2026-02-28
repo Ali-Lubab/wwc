@@ -17,9 +17,11 @@ public class TransferController {
 
     @GetMapping("/transfers/{id}")
     public Transfer getById(@PathVariable Long id) {
-        return transferRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Transfer not found"));
+        Transfer transfer = transferRepository.findById(id);
+        if (transfer == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Transfer not found");
+        }
+        return transfer;
     }
 
     @GetMapping("/transfers")

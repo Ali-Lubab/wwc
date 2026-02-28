@@ -26,9 +26,11 @@ public class RateController {
 
     @GetMapping("/rates/{id}")
     public Rate getById(@PathVariable Long id) {
-        return rateRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Rate not found"));
+        Rate rate = rateRepository.findById(id);
+        if (rate == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Rate not found");
+        }
+        return rate;
     }
 
     @GetMapping("/rates")

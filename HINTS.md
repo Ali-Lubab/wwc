@@ -28,7 +28,9 @@ This is a money transfer application. The aim is to be able to create a recipien
 
 **What you need to do:**
 - Add a new `email` field (type `String`) to the `Recipient` entity class
-- Update `schema.sql` to add an `email` column to the recipient table
+- Update `schema.sql` to add an `email` column to the recipient table. There are 2 ways to do this:
+    - If you want to keep the existing data, you can use an `ALTER TABLE` statement to add the new column without dropping the table. Make sure you also include `IF NOT EXISTS`, otherwise on every application startup, it would try to add a new column again.
+    - If you don't mind losing existing data, you can modify the `CREATE TABLE` statement to include the new column and drop/recreate the table. The database is stored in the `/data` folder. Delete everything under it.
 - Update `RecipientRepository` to include the email field in the row mapper, INSERT, and UPDATE statements
 
 **Files to modify:** `Recipient.java`, `RecipientRepository.java`, `schema.sql`

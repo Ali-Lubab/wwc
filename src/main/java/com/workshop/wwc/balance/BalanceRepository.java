@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -31,19 +30,19 @@ public class BalanceRepository {
         return jdbcTemplate.query("SELECT * FROM balance", rowMapper);
     }
 
-    public Optional<Balance> findById(Long id) {
+    public Balance findById(Long id) {
         List<Balance> results = jdbcTemplate.query(
                 "SELECT * FROM balance WHERE id = ?", rowMapper, id
         );
-        return results.stream().findFirst();
+        return results.isEmpty() ? null : results.get(0);
     }
 
-    public Optional<Balance> findByCurrency(String currency) {
+    public Balance findByCurrency(String currency) {
         List<Balance> results = jdbcTemplate.query(
                 "SELECT * FROM balance WHERE currency = ?",
                 rowMapper, currency
         );
-        return results.stream().findFirst();
+        return results.isEmpty() ? null : results.get(0);
     }
 
     public Balance save(Balance balance) {

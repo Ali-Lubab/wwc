@@ -12,7 +12,6 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -38,11 +37,11 @@ public class TransferRepository {
         return jdbcTemplate.query("SELECT * FROM transfer", rowMapper);
     }
 
-    public Optional<Transfer> findById(Long id) {
+    public Transfer findById(Long id) {
         List<Transfer> results = jdbcTemplate.query(
                 "SELECT * FROM transfer WHERE id = ?", rowMapper, id
         );
-        return results.stream().findFirst();
+        return results.isEmpty() ? null : results.get(0);
     }
 
     public Transfer save(Transfer transfer) {

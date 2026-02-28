@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -33,11 +32,11 @@ public class RecipientRepository {
         return jdbcTemplate.query("SELECT * FROM recipient", rowMapper);
     }
 
-    public Optional<Recipient> findById(Long id) {
+    public Recipient findById(Long id) {
         List<Recipient> results = jdbcTemplate.query(
                 "SELECT * FROM recipient WHERE id = ?", rowMapper, id
         );
-        return results.stream().findFirst();
+        return results.isEmpty() ? null : results.get(0);
     }
 
     public Recipient save(Recipient recipient) {

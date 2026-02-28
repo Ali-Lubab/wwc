@@ -17,6 +17,7 @@ You can click on any request to see details about it, including the request payl
 
 ## Tasks
 This is a money transfer application. The aim is to be able to create a recipient, check currency exchange rates and create a transfer. 
+There is a `HINTS.md` file which has more help and details about the exercise. If you would like to do it yourself, we suggest not to read it first, only if you are stuck and need some help.
 
 ### 1. Implement Exchange Rate Calculator
 Build a currency conversion feature that allows users to calculate how much money they will receive when exchanging between currencies.

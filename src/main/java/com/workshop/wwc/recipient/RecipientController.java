@@ -24,9 +24,11 @@ public class RecipientController {
 
     @GetMapping("/recipients/{id}")
     public Recipient getById(@PathVariable Long id) {
-        return recipientRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Recipient not found"));
+        Recipient recipient = recipientRepository.findById(id);
+        if (recipient == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Recipient not found");
+        }
+        return recipient;
     }
 
     @GetMapping("/recipients")
