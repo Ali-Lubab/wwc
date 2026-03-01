@@ -1,22 +1,26 @@
+INSERT INTO recipient (first_name, last_name, account_number, is_active)
+SELECT 'Current', 'User', 'ME000', TRUE
+    WHERE NOT EXISTS (SELECT 1 FROM recipient WHERE account_number = 'ME000');
+
 -- Row 1: EUR
-INSERT INTO balance (currency, amount)
-SELECT 'EUR', 1200.00
-    WHERE NOT EXISTS (SELECT 1 FROM balance WHERE currency = 'EUR');
+INSERT INTO balance (recipient_id, currency, amount)
+SELECT (SELECT id FROM recipient WHERE account_number = 'ME000'), 'EUR', 1200.00
+    WHERE NOT EXISTS (SELECT 1 FROM balance WHERE recipient_id = (SELECT id FROM recipient WHERE account_number = 'ME000') AND currency = 'EUR');
 
 -- Row 2: USD
-INSERT INTO balance (currency, amount)
-SELECT 'USD', 500.00
-    WHERE NOT EXISTS (SELECT 1 FROM balance WHERE currency = 'USD');
+INSERT INTO balance (recipient_id, currency, amount)
+SELECT (SELECT id FROM recipient WHERE account_number = 'ME000'), 'USD', 500.00
+    WHERE NOT EXISTS (SELECT 1 FROM balance WHERE recipient_id = (SELECT id FROM recipient WHERE account_number = 'ME000') AND currency = 'USD');
 
 -- Row 3: GBP
-INSERT INTO balance (currency, amount)
-SELECT 'GBP', 300.00
-    WHERE NOT EXISTS (SELECT 1 FROM balance WHERE currency = 'GBP');
+INSERT INTO balance (recipient_id, currency, amount)
+SELECT (SELECT id FROM recipient WHERE account_number = 'ME000'), 'GBP', 300.00
+    WHERE NOT EXISTS (SELECT 1 FROM balance WHERE recipient_id = (SELECT id FROM recipient WHERE account_number = 'ME000') AND currency = 'GBP');
 
 -- Row 4: HUF
-INSERT INTO balance (currency, amount)
-SELECT 'HUF', 150000.00
-    WHERE NOT EXISTS (SELECT 1 FROM balance WHERE currency = 'HUF');
+INSERT INTO balance (recipient_id, currency, amount)
+SELECT (SELECT id FROM recipient WHERE account_number = 'ME000'), 'HUF', 150000.00
+    WHERE NOT EXISTS (SELECT 1 FROM balance WHERE recipient_id = (SELECT id FROM recipient WHERE account_number = 'ME000') AND currency = 'HUF');
 
 
 INSERT INTO rate (source_currency, target_currency, rate)

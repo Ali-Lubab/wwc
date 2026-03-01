@@ -21,6 +21,7 @@ public class BalanceRepository {
     private final RowMapper<Balance> rowMapper = (rs, rowNum) -> {
         Balance b = new Balance();
         b.setId(rs.getLong("id"));
+        b.setRecipientId(rs.getLong("recipient_id"));
         b.setCurrency(rs.getString("currency"));
         b.setAmount(rs.getBigDecimal("amount"));
         return b;
@@ -45,18 +46,27 @@ public class BalanceRepository {
         return results.isEmpty() ? null : results.get(0);
     }
 
+    public Balance findByRecipientIdAndCurrency(Long recipientId, String currency) {
+        List<Balance> results = jdbcTemplate.query(
+                "SELECT * FROM balance WHERE recipient_id = ? AND currency = ?",
+                rowMapper, recipientId, currency
+        );
+        return results.isEmpty() ? null : results.get(0);
+    }
+
     public Balance save(Balance balance) {
         if (balance.getId() == null) {
             // INSERT
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update(connection -> {
                 PreparedStatement ps = connection.prepareStatement(
-                        "INSERT INTO balance (currency, amount) "
-                                + "VALUES (?, ?)",
+                        "INSERT INTO balance (recipient_id, currency, amount) "
+                                + "VALUES (?, ?, ?)",
                         Statement.RETURN_GENERATED_KEYS
                 );
-                ps.setString(1, balance.getCurrency());
-                ps.setBigDecimal(2, balance.getAmount());
+                ps.setLong(1, balance.getRecipientId());
+                ps.setString(2, balance.getCurrency());
+                ps.setBigDecimal(3, balance.getAmount());
                 return ps;
             }, keyHolder);
 
@@ -64,8 +74,8 @@ public class BalanceRepository {
         } else {
             // UPDATE
             jdbcTemplate.update(
-                    "UPDATE balance SET currency = ?, amount = ? WHERE id = ?",
-                    balance.getCurrency(), balance.getAmount(),
+                    "UPDATE balance SET recipient_id = ?, currency = ?, amount = ? WHERE id = ?",
+                    balance.getRecipientId(), balance.getCurrency(), balance.getAmount(),
                     balance.getId()
             );
         }

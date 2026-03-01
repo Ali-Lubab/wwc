@@ -1,15 +1,18 @@
-CREATE TABLE IF NOT EXISTS balance (
-    id         BIGINT AUTO_INCREMENT PRIMARY KEY,
-    currency   VARCHAR(3)     NOT NULL UNIQUE,
-    amount     DECIMAL(19,4)  NOT NULL
-);
-
 CREATE TABLE IF NOT EXISTS recipient (
     id             BIGINT AUTO_INCREMENT PRIMARY KEY,
     first_name     VARCHAR(255) NOT NULL,
     last_name      VARCHAR(255) NOT NULL,
     account_number VARCHAR(255) NOT NULL,
     is_active      BOOLEAN      NOT NULL DEFAULT TRUE
+);
+
+CREATE TABLE IF NOT EXISTS balance (
+    id           BIGINT AUTO_INCREMENT PRIMARY KEY,
+    recipient_id BIGINT         NOT NULL,
+    currency     VARCHAR(3)     NOT NULL,
+    amount       DECIMAL(19,4)  NOT NULL,
+    UNIQUE (recipient_id, currency),
+    FOREIGN KEY (recipient_id) REFERENCES recipient(id)
 );
 
 CREATE TABLE IF NOT EXISTS rate (
