@@ -17,6 +17,8 @@ public class Balance {
 
     private Long id;
 
+    private Long recipientId;
+
     private String currency;
 
     private BigDecimal amount;

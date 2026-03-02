@@ -11,8 +11,6 @@ This is a money transfer application. The aim is to be able to create a recipien
 
 ### 1. Implement Exchange Rate Calculator
 
-**Test it:** Open http://localhost:8080/exchange-rate-calculator.html in the browser and try converting 100 EUR to USD.
-
 **What you need to do:**
 - Implement `GET /rates/convert` endpoint in `RateController` that accepts source currency, target currency, and amount as parameters
 - Look up the exchange rate from `RateRepository` using `findBySourceCurrencyAndTargetCurrency()`
@@ -20,42 +18,49 @@ This is a money transfer application. The aim is to be able to create a recipien
 - Return the result (original amount, converted amount, rate used, and currencies)
 - Handle the case where a currency pair doesn't exist (throw an appropriate error message)
 
+**Test it:** Open http://localhost:8080/exchange-rate-calculator.html in the browser and try converting 100 EUR to USD.
+
 **Files to modify:** `RateController.java`
 
 ### 2. Add Email Field to Recipient
 
-**Test it:** Add a new recipient with an email address and verify it appears in the recipients list.
-
 **What you need to do:**
 - Add a new `email` field (type `String`) to the `Recipient` entity class
-- Update `schema.sql` to add an `email` column to the recipient table
+- Update `schema.sql` to add an `email` column to the recipient table. There are 2 ways to do this:
+    - If you want to keep the existing data, you can use an `ALTER TABLE` statement to add the new column without dropping the table. Make sure you also include `IF NOT EXISTS`, otherwise on every application startup, it would try to add a new column again.
+    - If you don't mind losing existing data, you can modify the `CREATE TABLE` statement to include the new column and drop/recreate the table. The database is stored in the `/data` folder. Delete everything under it.
 - Update `RecipientRepository` to include the email field in the row mapper, INSERT, and UPDATE statements
+
+**Test it:** Add a new recipient with an email address and verify it appears in the recipients list.
 
 **Files to modify:** `Recipient.java`, `RecipientRepository.java`, `schema.sql`
 
 ### 3. Implement Transfer Creation with Balance Updates
+
+**What you need to do:**
+- **3.a.** Deduct the source amount from the appropriate balance when a transfer is created:
+    - Look up the balance for the source currency using `BalanceRepository.findByCurrency()`
+    - Subtract the transfer's source amount from the balance
+    - Save the updated balance
+- **3.b** Add the balance to the recipient's balance for the target currency:
+    - Look up the balance for the target currency
+    - If it doesn't exist, create a new balance with amount 0
+    - Add the transfer's target amount to the balance
+    - Save the updated balance
+- **3.c**.* Create a new transfer record in the database with all the relevant details (recipient, source/target currencies and amounts, timestamp)
+- **3.d.** Add validation to prevent transfers when the balance is insufficient:
+    - Before creating the transfer, check if the balance has enough funds
+    - If not, return an error response (e.g., HTTP 400 Bad Request with a message)
 
 **Test it:**
 1. Check your EUR balance on the home page
 2. Create a transfer from EUR to USD
 3. Verify the EUR balance decreased by the source amount
 4. Try to create a transfer larger than your remaining balance - it should fail
-
-**What you need to do:**
-- **3.a.** Verify the basic transfer creation works - create a transfer and confirm it appears in the transfers list on the home page
-- **3.b.** Deduct the source amount from the appropriate balance when a transfer is created:
-    - Look up the balance for the source currency using `BalanceRepository.findByCurrency()`
-    - Subtract the transfer's source amount from the balance
-    - Save the updated balance
-- **3.c.** Add validation to prevent transfers when the balance is insufficient:
-    - Before creating the transfer, check if the balance has enough funds
-    - If not, return an error response (e.g., HTTP 400 Bad Request with a message)
-
+5. 
 **Files to modify:** `TransferController.java`
 
 ### 4. Refactor Transfer Creation Logic into a Service
-
-**Test it:** Verify that the transfer creation still work exactly as before.
 
 **What you need to do:**
 - Create a new class `TransferService.java` in the `transfer` package
@@ -65,17 +70,11 @@ This is a money transfer application. The aim is to be able to create a recipien
 - Inject `RateRepository`, `BalanceRepository` and `TransferRepository` into the service
 - Update `TransferController` to inject and use `TransferController` instead of containing the logic directly
 
-**Files to create:** `TransferService.java`
+**Files to create:** `TransferController.java`, `TransferService.java`
 
-**Files to modify:**  `TransferController.java`
+**Test it:** Verify that the transfer creation still work exactly as before.
 
 ### 5. Implement Currency Drop-downs for Exchange Rate Calculator
-
-**Test it:**
-1. Open the exchange rate calculator page
-2. The source currency drop-down should show all available currencies
-3. Select a source currency - the target drop-down should update to show only valid pairs
-4. Perform a conversion and verify it still works
 
 **What you need to do:**
 
@@ -97,3 +96,9 @@ This is a money transfer application. The aim is to be able to create a recipien
 - Make sure the form submission still works with the new select elements
 
 **Files to modify:** `RateController.java`, `exchange-rate-calculator.html`
+
+**Test it:**
+1. Open the exchange rate calculator page
+2. The source currency drop-down should show all available currencies
+3. Select a source currency - the target drop-down should update to show only valid pairs
+4. Perform a conversion and verify it still works
